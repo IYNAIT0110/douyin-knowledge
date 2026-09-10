@@ -1,0 +1,18 @@
+# 敏感凭据（绝不能上传）
+douyin_cookies.txt
+
+# 大文件 / 媒体
+downloads/
+videos/
+
+# 内部流水与转写中间产物
+daily/
+transcripts/
+
+# 工具脚本
+*.py
+__pycache__/
+
+# 其他
+*.log
+.DS_Store
