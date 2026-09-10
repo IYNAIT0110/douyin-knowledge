@@ -80,6 +80,17 @@ C:\Users\tianyi.bu\.workbuddy\binaries\python\envs\douyin\Scripts\python.exe \
 | `downloads/` | 视频临时目录（转写后自动删，7 天清理） |
 | `douyin_cookies.txt` | 自动刷新的游客 cookie |
 
+## GitHub 同步
+
+每天整理完 `reports/` 和 `todos/` 的 md 文件后，自动 git commit + push 到：
+
+🔗 **https://github.com/IYNAIT0110/douyin-knowledge**
+
+- 认证：gh CLI 已登录（账号 `IYNAIT0110`），git credential 已指向 gh
+- 上传内容：仅 `reports/`、`todos/`、`README.md`、`.gitignore`
+- 不上传：视频、cookie、逐字稿、脚本（见 `.gitignore`）
+- ⚠️ 该仓库为**公开**，任何人可访问。若想保密，去 GitHub 把仓库改为 Private
+
 ## 已知限制
 
 - 抖音风控可能升级，游客 cookie 若失效，`get_douyin_cookies.py` 会自动重刷，通常能恢复
