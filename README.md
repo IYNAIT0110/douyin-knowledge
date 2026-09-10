@@ -24,7 +24,7 @@
    - yt-dlp 下载视频
    - faster-whisper 转写中文逐字稿 → `transcripts/YYYY-MM-DD/<id>.txt`
 3. 读逐字稿生成摘要；转写失败的用口述/文案兜底
-4. 生成 `reports/YYYY-MM-DD.md` + `todos/YYYY-MM-DD.md`
+4. 生成 `notes/YYYY-MM-DD.md`（报告）+ `notes/YYYY-MM-DD-todos.md`（待办）
 5. present_files 展示
 
 ## 环境配置（已就绪）
@@ -74,11 +74,10 @@ C:\Users\tianyi.bu\.workbuddy\binaries\python\envs\douyin\Scripts\python.exe \
 
 | 目录 | 用途 |
 |------|------|
-| `reports/` | 摘要报告 `YYYY-MM-DD.md` |
-| `todos/` | 学习待办 `YYYY-MM-DD.md` |
-| `transcripts/` | 逐字稿 txt/json，按日期分组 |
+| `notes/` | **所有产出**，按日期命名：报告 `YYYY-MM-DD.md`、待办 `YYYY-MM-DD-todos.md`、深度总结 `YYYY-MM-DD-<主题>.md` |
+| `transcripts/` | 逐字稿 txt/json，按日期分组（不上传） |
 | `downloads/` | 视频临时目录（转写后自动删，7 天清理） |
-| `douyin_cookies.txt` | 自动刷新的游客 cookie |
+| `douyin_cookies.txt` | 自动刷新的游客 cookie（不上传） |
 
 ## GitHub 同步
 
@@ -87,7 +86,7 @@ C:\Users\tianyi.bu\.workbuddy\binaries\python\envs\douyin\Scripts\python.exe \
 🔗 **https://github.com/IYNAIT0110/douyin-knowledge**
 
 - 认证：gh CLI 已登录（账号 `IYNAIT0110`），git credential 已指向 gh
-- 上传内容：仅 `reports/`、`todos/`、`README.md`、`.gitignore`
+- 上传内容：仅 `notes/`、`README.md`、`.gitignore`
 - 不上传：视频、cookie、逐字稿、脚本（见 `.gitignore`）
 - ⚠️ 该仓库为**公开**，任何人可访问。若想保密，去 GitHub 把仓库改为 Private
 
