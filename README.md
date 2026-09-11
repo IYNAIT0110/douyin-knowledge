@@ -18,7 +18,9 @@
 ## 自动化要做的事
 
 每个工作日 10:00 自动触发：
-1. `lark-cli im +chat-messages-list` 读群当天消息，提取抖音短链
+1. `lark-cli im +chat-messages-list` 读群**「上次跑完后 → 本次」窗口**内所有消息（默认滑动 24h），提取抖音短链
+   - **不再以"自然日 00:00 - 23:59"为界**——避免上午 10 点跑时漏掉前晚 23:5x 新增的视频
+   - 首次运行时窗口为 24h；后续每天向前滑动
 2. `download_transcribe.py` 逐条处理：
    - Playwright 无头刷新游客 cookie（无需登录）
    - yt-dlp 下载视频
