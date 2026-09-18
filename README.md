@@ -9,6 +9,14 @@
 
 ✅ 已实测：游客 cookie 成功下载 237MB 720p 视频（走视频流地址，**绕开 App 里"禁止下载"的限制**）。
 
+### ⚠️ 坑位：必须访问「目标视频页」刷 cookie（2026-09-18 固化）
+
+只访问 `douyin.com` 首页刷 cookie 时，部分视频仍会报 `Fresh cookies needed`（2026-09-11 与 2026-09-18 均踩过）。
+
+**解法**：让 Playwright **直接 goto 目标视频页**再取 cookie，可稳定拿到 36-38 条（首页只有 23-30 条）。
+
+已在 `download_transcribe.py` 中固化：`refresh_cookies(target_url)` 会先访问目标视频页，cookie 数 ≥20 就不再回退首页；单链接时自动传入该链接，多链接走首页。
+
 ## 你要做的（只 1 步）
 
 手机抖音里点"分享" → 飞书 → "抖音收藏"群 → 发送链接。
@@ -21,6 +29,8 @@
 1. `lark-cli im +chat-messages-list` 读群**「上次跑完后 → 本次」窗口**内所有消息（默认滑动 24h），提取抖音短链
    - **不再以"自然日 00:00 - 23:59"为界**——避免上午 10 点跑时漏掉前晚 23:5x 新增的视频
    - 首次运行时窗口为 24h；后续每天向前滑动
+   - ⚠️ **必须做一次「不限时间」全量拉取复核**（2026-09-18 教训）：用户在运行时刻**之后**分享的视频，任何时窗查询都查不到。全量拉取（群消息总量很小，`has_more=false`）是唯一可靠的兜底 —— 9-17 曾据此误判"无新增"，实际当天下午和晚上各分享了 1 条，直到 9-18 全量复核才发现并补处理
+   - 注：`--start/--end` 必须用 **ISO 8601 带 T 分隔符**（`2026-09-18T00:00:00+08:00`），空格分隔会报 validation 错误
 2. `download_transcribe.py` 逐条处理：
    - Playwright 无头刷新游客 cookie（无需登录）
    - yt-dlp 下载视频
@@ -83,7 +93,7 @@ C:\Users\tianyi.bu\.workbuddy\binaries\python\envs\douyin\Scripts\python.exe \
 
 ## GitHub 同步
 
-每天整理完 `reports/` 和 `todos/` 的 md 文件后，自动 git commit + push 到：
+每天整理完 `notes/` 下的 md 文件后，自动 git commit + push 到：
 
 🔗 **https://github.com/IYNAIT0110/douyin-knowledge**
 
