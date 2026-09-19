@@ -37,8 +37,9 @@
    - faster-whisper 转写中文逐字稿 → `transcripts/YYYY-MM-DD/<id>.txt`
 3. 读逐字稿生成摘要；转写失败的用口述/文案兜底
 4. 生成 `notes/YYYY-MM-DD.md`（报告）+ `notes/YYYY-MM-DD-todos.md`（待办）
-5. （可选）生成 `notes/YYYY-MM-DD-<主题>.md` 深度总结
-6. present_files 展示
+5. （满足条件时）生成**两篇**深度总结：`notes/YYYY-MM-DD-<主题>-深度总结.md`（纯中文知识向）+ `notes/YYYY-MM-DD-<主题>-中英对照.md`（英语学习向）
+6. 生成跟读页 `shadowing/YYYY-MM-DD-<主题>-跟读.html`
+7. present_files 展示
 
 ### 深度总结的判定规则（2026-09-18 确立）
 
@@ -53,36 +54,51 @@
 > 反面判据：**长度本身不是理由**。短视频如果有方法层，也要单开；长视频如果主报告已完整覆盖，也不必硬凑。
 > 2026-09-18 的两条视频（37:51 的吴恩达访谈 + 4:02 的 AI 命名）**两条都单开了深度总结**，就是因为后者虽短，但"命名 = 团队的自我期许"是一个可复用的分析工具。
 
-### ⚠️ 深度总结必须是「中英对照版」（2026-09-19 用户要求，强制）
+### ⚠️ 深度总结一律出「两篇 + 一个跟读页」（2026-09-19 用户要求，强制）
 
-用户在学知识的同时要学英语，所以**深度总结文件一律写成中英对照，不再单独出纯中文版**（主报告 `YYYY-MM-DD.md` 保持纯中文，用于速览）。
+用户要在学知识的同时学英语。**每个单开深度总结的视频都要产出两份 md + 一个 HTML：**
 
-对照方式采用**渐隐支架（fading scaffold）**，而不是全程逐句对照。原因是：中英视觉权重相同时，眼睛一定会先读中文、直接跳过英文；逐句对照又容易把文章拆成孤立的句子，学不到篇章连接。所以按"扶梯由密到疏"分三段：
+| 文件 | 定位 | 要求 |
+| --- | --- | --- |
+| `notes/YYYY-MM-DD-<主题>-深度总结.md` | **知识向**（原风格） | 纯中文，逻辑清晰、论证完整的单篇文章。面向"我要搞懂这件事" |
+| `notes/YYYY-MM-DD-<主题>-中英对照.md` | **英语向** | 中英对照，面向"我要顺便练英语" |
+| `shadowing/YYYY-MM-DD-<主题>-跟读.html` | **口语向** | 单文件自带数据，任何电脑双击可开 |
+
+两份 md 内容可以有侧重差异，不是简单互译：知识向那份要讲透论证链；对照版那份要照顾可读性和语言学习节奏。
+
+#### 中英对照版的写法：渐隐支架（fading scaffold）
+
+不要全程逐句对照 —— 中英视觉权重相同时，眼睛会直接读中文、跳过英文；逐句孤立对照又学不到篇章连接。按"扶梯由密到疏"分三段：
 
 | 段 | 对照粒度 | 规则 |
 | --- | --- | --- |
-| **Part A** 核心论点 | 逐句（EN 一行 → 中一行） | 英文用 `**EN**` 开头放在正文；中文放进 `>` 引用块，视觉弱化，逼读者先读英文 |
+| **Part A** 核心论点 | 逐句（EN 一行 → 中一行） | 英文用 `**EN**` 开头放正文；中文放进 `>` 引用块，视觉弱化，逼读者先读英文 |
 | **Part B** 论证展开 | 整段（英文整段 → 中文整段） | 撑完一整段英文才给中文，训练篇章级阅读 |
 | **Part C** 延伸/用例 | 纯英文 + 少量术语注 | 中文用 `<details>` 折叠，只用于**读完英文后自查**，不用于对读 |
 
 固定附件（每篇都要有）：
 
-- **词块表 Chunk Table**（15-20 条）：给可复用搭配（如 `lean in` / `the bottleneck has shifted` / `be in a position to do sth`），**不是单词表** —— 词块能直接搬进口语和写作
-- **原声金句**（视频为英文时）：英文原句，**不配中文**，留出自己啃的空间
-- 文末保留一份**中文速览落地清单**（无英文），方便快速执行
+- **词块表 Chunk Table**（15-20 条）：可复用搭配（如 `lean in` / `the bottleneck has shifted` / `be in a position to do sth`），**不是单词表**
+- **原声金句**（视频为英文时）：英文原句，**不配中文**
+- 文末**中文速览落地清单**（无英文）
 
-**每篇还必须生成跟读页**（`make_shadowing.py`）：
+#### 跟读页
 
 ```bash
-python make_shadowing.py "notes/YYYY-MM-DD-<主题>-深度总结.md" --part all
-# → shadowing/<同名>-Partall.html
+python make_shadowing.py "notes/YYYY-MM-DD-<主题>-中英对照.md"
+# → shadowing/YYYY-MM-DD-<主题>-中英对照-跟读.html
 ```
 
-浏览器本地语音朗读，离线可用，中文默认折叠；点句即读，可调语速与句间停顿。用 present_files 展示给用户。
-（`--format mp3` 走 edge-tts 在线合成，本机网络连不上 `speech.platform.bing.com`，默认不用。）
+脚本会自动解析 A/B/C 三段（含 `<details>` 折叠的中文），生成单文件 HTML。**必须保证"任何电脑都能出声"**，语音三档自动降级：
 
-> 参考样板：`notes/2026-09-18-对话吴恩达-AI恐惧与机会-深度总结.md`
-> 注：2026-09-18 的 `AI命名里的小巧思` 那条仍是纯中文版，属历史文件，不作为后续样板。
+1. **本地语音** —— 浏览器 speechSynthesis，离线、零延迟（有英文语音包时首选）
+2. **在线·有道** —— `dict.youdao.com/dictvoice`，国内可达，不需要本机语音包
+3. **在线·Google** —— `translate.google.com/translate_tts`，境外兜底
+
+打开时若检测不到英文语音包，自动切换在线档并在页面上提示。`shadowing/` 的 HTML **要上传 GitHub**，方便换机器下载后直接打开。
+
+> 参考样板：`notes/2026-09-18-对话吴恩达-AI恐惧与机会-深度总结.md`（知识向）+ `-中英对照.md`（英语向）+ `shadowing/…-跟读.html`
+> 注：`2026-09-18-AI命名里的小巧思-深度总结.md` 目前只有知识向一篇，尚未补对照版。
 
 ## 环境配置（已就绪）
 
@@ -132,7 +148,8 @@ C:\Users\tianyi.bu\.workbuddy\binaries\python\envs\douyin\Scripts\python.exe \
 
 | 目录 | 用途 |
 |------|------|
-| `notes/` | **所有产出**，按日期命名：报告 `YYYY-MM-DD.md`、待办 `YYYY-MM-DD-todos.md`、深度总结 `YYYY-MM-DD-<主题>.md` |
+| `notes/` | **知识产出**，按日期命名：报告 `YYYY-MM-DD.md`、待办 `YYYY-MM-DD-todos.md`、深度总结 `…-深度总结.md`（知识向）+ `…-中英对照.md`（英语向） |
+| `shadowing/` | 跟读 HTML（单文件自带数据，任何电脑可开），随仓库上传 |
 | `transcripts/` | 逐字稿 txt/json，按日期分组（不上传） |
 | `downloads/` | 视频临时目录（转写后自动删，7 天清理） |
 | `douyin_cookies.txt` | 自动刷新的游客 cookie（不上传） |
@@ -144,8 +161,8 @@ C:\Users\tianyi.bu\.workbuddy\binaries\python\envs\douyin\Scripts\python.exe \
 🔗 **https://github.com/IYNAIT0110/douyin-knowledge**
 
 - 认证：gh CLI 已登录（账号 `IYNAIT0110`），git credential 已指向 gh
-- 上传内容：仅 `notes/`、`README.md`、`.gitignore`
-- 不上传：视频、cookie、逐字稿、脚本（见 `.gitignore`）
+- 上传内容：`notes/`、`shadowing/` 的 HTML、`README.md`、`.gitignore`
+- 不上传：视频、cookie、逐字稿、脚本（`*.py`）、mp3（见 `.gitignore`）
 - ⚠️ 该仓库为**公开**，任何人可访问。若想保密，去 GitHub 把仓库改为 Private
 
 ## 已知限制

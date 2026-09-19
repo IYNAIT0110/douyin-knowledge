@@ -9,8 +9,7 @@ videos/
 daily/
 transcripts/
 
-# 跟读产物（本地用，不上传）
-shadowing/
+# mp3 体积大不上传；shadowing/ 下的跟读 HTML 要上传（任何电脑下载即可打开）
 *.mp3
 
 # 工具脚本

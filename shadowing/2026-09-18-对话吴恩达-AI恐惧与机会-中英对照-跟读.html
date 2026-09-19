@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>2026-09-18-对话吴恩达-AI恐惧与机会-中英对照</title>
+<style>
+:root{
+  --bg:#fbfaf8; --card:#ffffff; --line:#e6e2dc; --tx:#1f2328; --tx2:#6b7280;
+  --accent:#2f6f4f; --accent-soft:#e8f1ec; --cn:#8a8578; --warn:#b45309; --warnbg:#fdf6e3;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);
+  font-family:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+  line-height:1.75;padding:0 0 90px}
+header{position:sticky;top:0;z-index:10;background:rgba(251,250,248,.95);
+  backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:12px 18px}
+h1{font-size:16px;margin:0 0 9px;font-weight:650;line-height:1.4}
+h1 small{font-weight:400;color:var(--tx2);font-size:12.5px}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:13px}
+button,select{font:inherit;font-size:12.5px;padding:5px 11px;border:1px solid var(--line);
+  background:var(--card);color:var(--tx);border-radius:7px;cursor:pointer}
+button:hover{border-color:var(--accent);color:var(--accent)}
+button.on{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+label{display:flex;align-items:center;gap:5px;color:var(--tx2);font-size:12.5px}
+input[type=range]{width:96px}
+main{max-width:840px;margin:0 auto;padding:18px}
+.part-h{margin:26px 0 11px;font-size:13.5px;font-weight:650;color:var(--accent);
+  border-left:3px solid var(--accent);padding-left:9px}
+.row{background:var(--card);border:1px solid var(--line);border-radius:10px;
+  padding:11px 13px;margin-bottom:7px;cursor:pointer;transition:.15s}
+.row:hover{border-color:var(--accent)}
+.row.playing{background:var(--accent-soft);border-color:var(--accent)}
+.en{font-size:15.5px}
+.num{display:inline-block;min-width:32px;color:var(--tx2);font-size:12px;
+  font-variant-numeric:tabular-nums}
+.cn{display:none;margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);
+  color:var(--cn);font-size:13.5px}
+body.show-cn .cn{display:block}
+.tip{font-size:12.5px;color:var(--tx2);background:#f2f4f3;border-radius:8px;
+  padding:10px 14px;margin:14px 0;line-height:1.7}
+.tip.warn{background:var(--warnbg);color:var(--warn);border:1px solid #f0e0bc}
+footer{max-width:840px;margin:22px auto 0;padding:0 18px;font-size:12px;color:var(--tx2)}
+#status{font-size:12px;color:var(--tx2);min-height:18px;margin-top:6px}
+</style>
+</head>
+<body>
+<header>
+  <h1>2026-09-18-对话吴恩达-AI恐惧与机会-中英对照 <small>· 跟读版</small></h1>
+  <div class="bar">
+    <button id="playAll">&#9654; 播放全部</button>
+    <button id="stop">&#9632; 停止</button>
+    <button id="toggleCn">显示中文</button>
+    <select id="engine" title="语音引擎">
+      <option value="local">本地语音（离线）</option>
+      <option value="youdao">在线·有道</option>
+      <option value="google">在线·Google</option>
+    </select>
+    <select id="voice"><option value="">默认语音</option></select>
+    <label>语速 <input type="range" id="rate" min="0.5" max="1.2" step="0.05" value="0.85">
+      <span id="rateVal">0.85x</span></label>
+    <label>停顿 <input type="range" id="gap" min="0" max="2500" step="100" value="1200">
+      <span id="gapVal">1.2s</span></label>
+  </div>
+  <div id="status"></div>
+</header>
+<main>
+  <div class="tip">
+    点任意一句开始朗读。建议顺序：<b>① 先只听英文、猜意思 → ② 点开中文核对 → ③ 跟着读一遍（shadowing）</b>。
+    语速建议先 0.8x，跟得上再调到 1.0x。中文默认收起，逼自己先过英文。
+  </div>
+  <div id="list"></div>
+</main>
+<footer>共 48 句 · 数据内嵌在单个 HTML 里，离线可直接双击打开</footer>
+<script>
+const DATA = [{"part": "A", "en": "On the surface this interview asks \"is AI scary?\". Underneath, Andrew Ng is making three separate arguments.", "cn": "这场访谈表面上在问\"AI 可不可怕\"，底下其实讲了三件不同的事。"}, {"part": "A", "en": "First: the fear narrative is manufactured, not a technical fact.", "cn": "第一：恐惧叙事是被制造出来的，不是技术事实。"}, {"part": "A", "en": "Second: AI changes the *composition* of a job — it does not eliminate the job.", "cn": "第二：AI 改变的是岗位的*任务构成*，不是消灭岗位。"}, {"part": "A", "en": "Third: human value is anchored in something he calls **context advantage**.", "cn": "第三：人的价值锚定在一个他称为**上下文优势**的东西上。"}, {"part": "A", "en": "The most valuable asset today is the giant LLM that companies spent billions to train.", "cn": "今天最有价值的资产，是各家公司花几十亿美元训出来的 giant LLM。"}, {"part": "A", "en": "So the worst possible outcome for incumbents is this: someone trains an equally good model and gives it away for free.", "cn": "所以对在位者来说最糟的局面是：有人训了一个同样好的模型，还免费送给人用。"}, {"part": "A", "en": "His claim is blunt — much of the AI-doom talk is \"PR and regulatory capture\".", "cn": "他的判断很直白：很多 AI 末日论本质是\"公关 + 监管俘获\"。"}, {"part": "A", "en": "The playbook is simple: push for regulation, tilt the playing field, and raise the barrier for whoever comes next.", "cn": "套路很简单：推动监管、让竞争环境倾斜、抬高后来者的门槛。"}, {"part": "A", "en": "The real cost, he says, isn't bad policy. It's that fear makes people quit.", "cn": "他说真正的代价不是坏政策，而是恐惧让人放弃。"}, {"part": "A", "en": "A student about to enter college wrote to him: in four years won't AI do all this, and everything I learn be obsolete?", "cn": "一个即将上大学的孩子写信问他：四年后 AI 不是什么都能做了吗？那我学的还有意义吗？"}, {"part": "A", "en": "His answer was no — but the damage is already done the moment someone decides not to lean in at all.", "cn": "他的回答是\"不会\" —— 但只要有人因此决定干脆不入场，伤害就已经造成了。"}, {"part": "A", "en": "In his words: \"making people give up is one of the worst things we'll be doing in this era, when people that lean in will thrive.\"", "cn": "用他的话说：\"这个时代最糟的事之一就是让人放弃 —— 而敢躬身入局的人会蓬勃发展。\""}, {"part": "A", "en": "Don't measure AI by job titles. Break the job into individual tasks.", "cn": "别按岗位衡量 AI，要把岗位拆成单个任务。"}, {"part": "A", "en": "AI can handle roughly 30-40% of the tasks in a lot of jobs.", "cn": "AI 大约能承担很多工作里 30-40% 的任务。"}, {"part": "A", "en": "Here's the part everyone misses: because that 30-40% got cheap, the remaining 60% became *more* valuable.", "cn": "所有人都会漏掉这一点：正因为那 30-40% 变便宜了，剩下的 60% 反而*更*值钱。"}, {"part": "A", "en": "That's economic complement, not substitution.", "cn": "这是经济互补，不是替代。"}, {"part": "A", "en": "The net effect: people who use AI will replace people who don't. AI is not in a position to replace people.", "cn": "净效应是：会用 AI 的人会取代不会用 AI 的人；而 AI 还谈不上取代人。"}, {"part": "A", "en": "On the hype side he's equally impatient. Asked if superintelligence has arrived: \"I wish AI worked better — we're just not good enough.\"", "cn": "对另一端的炒作他同样不耐烦。被问到超智能是否到了，他说：\"我也希望 AI 更好用 —— 但我们确实还不够好。\""}, {"part": "A", "en": "Ask AI to brainstorm and you get a familiar mix: one or two good ideas, two or three mediocre ones, and four that are frankly absurd.", "cn": "让 AI 头脑风暴，你会得到一个熟悉的比例：一两个好主意、两三个平庸的、四个离谱的。"}, {"part": "A", "en": "Absurd to the point where you wonder how it ever thought that made sense.", "cn": "离谱到你会怀疑：它怎么会觉得这说得通。"}, {"part": "A", "en": "The reason isn't intelligence. It's context.", "cn": "原因不是智力，是上下文。"}, {"part": "A", "en": "You've seen the look on a client's face, and you just know they don't like it.", "cn": "你见过客户脸上的表情，就知道他们不喜欢。"}, {"part": "A", "en": "You remember your boss saying offhand, \"I really care about this.\"", "cn": "你记得老板随口说过一句\"这个我很在意\"。"}, {"part": "A", "en": "You carry years of tacit knowledge about which paths simply don't exist.", "cn": "你带着多年积累的隐性知识，知道哪些路根本走不通。"}, {"part": "A", "en": "None of that is in the AI's context window — and he doesn't expect anyone to solve this in the next few years.", "cn": "这些都不在 AI 的上下文里 —— 而且他不认为未来几年有人能解决。"}, {"part": "A", "en": "So he gives \"taste\" a technical definition: taste is just context advantage wearing a nicer name.", "cn": "于是他给\"品味\"下了个技术定义：品味只是换了个好听名字的上下文优势。"}, {"part": "A", "en": "Which flips the conclusion — we'll need *more* people with judgment, not fewer.", "cn": "结论因此反转：我们需要*更多*有判断力的人，而不是更少。"}, {"part": "A", "en": "It also explains why education matters more, not less: education is what gives you context.", "cn": "这也解释了为什么教育更重要而不是更不重要：教育给你的就是上下文。"}, {"part": "A", "en": "This is the part he admits is controversial and hadn't said publicly before.", "cn": "这部分他自己承认有争议，而且此前没公开说过。"}, {"part": "A", "en": "Students who use AI score higher on their assignments.", "cn": "用 AI 的学生作业分数更高。"}, {"part": "A", "en": "But their long-term retention is measurably worse.", "cn": "但他们的长期保持率明显更差。"}, {"part": "A", "en": "The mechanism is **cognitive offloading**: when AI does the work, you skip the building process that makes memory stick.", "cn": "机制是**认知卸载**：AI 替你干活时，你跳过了那个让记忆成形的构建过程。"}, {"part": "A", "en": "His own example: he built a component with AI, it worked beautifully, and six months later he had no idea how — so he asked AI all over again.", "cn": "他自己的例子：他用 AI 搭过一个组件，跑得很漂亮，六个月后完全不记得怎么做的 —— 于是又去问了 AI 一遍。"}, {"part": "A", "en": "He's not saying there's no good use. He's saying most people's current use isn't it.", "cn": "他不是说没有好的用法，而是说当前大多数人的用法不在其中。"}, {"part": "A", "en": "\"The cost of building has plummeted, and so the challenge is shifting to deciding what to build.\"", "cn": "\"构建的成本崩塌了，所以挑战正转移到'决定做什么'上。\""}, {"part": "A", "en": "He calls this **the product management bottleneck** — what's scarce is no longer capability, it's product judgment.", "cn": "他称之为**产品管理瓶颈** —— 稀缺的不再是能力，而是产品判断力。"}, {"part": "A", "en": "His own loop is short: learn AI → build fast → talk to customers.", "cn": "他自己的循环很短：学 AI → 快速构建 → 跟客户聊。"}, {"part": "A", "en": "But don't misread \"you can build in a weekend\" as \"you can build a company in a weekend.\"", "cn": "但别把\"周末能 build 出来\"误读成\"周末能建起一家公司\"。"}, {"part": "A", "en": "A wrapper, yes. A company still needs real technical depth or deep customer insight.", "cn": "一个 wrapper 可以。但建一家公司依然需要真实的技术深度，或深刻的客户洞察。"}, {"part": "B", "en": "He names three, and they work as a checklist whenever you scroll past an AI headline. First, analogies with no basis in fact — \"AI is like a nuclear weapon.\" His counter-question is simple: what does one have to do with the other? Second, cherry-picking: take one AI failure, frame it as the norm, and in some cases just spread outright misinformation. Third, inflated resource narratives — the data-center water consumption scare being the example he reaches for.", "cn": "他点了三种手法，可以当成日常刷到 AI 新闻时的识别清单。第一，无事实依据的类比 —— \"AI 像核武器\"。他的反问很简单：这两者到底有什么关系？第二，挑个案：拿某一次 AI 出错渲染成普遍现象，有些甚至直接散布错误信息。第三，夸大的资源叙事 —— 他举的例子是数据中心耗水的渲染远超实际情况。"}, {"part": "B", "en": "Software engineering is his strongest empirical case. AI is best at writing code, so by doom-logic this is the field that should have collapsed first. What actually happened: job openings in software engineering went *up*, and the best engineers he knows are busier than ever. The real dividing line isn't human versus AI — it's generational. As he puts it: \"if someone still writes code like it's 2022, before ChatGPT — they're in trouble.\" The fix isn't to compete with AI on the 30-40% it automates. It's to hand that over and go build the other 60-70% of new skills.", "cn": "软件工程是他最有说服力的实证段落。AI 最擅长的就是写代码，按末日论这应该是第一个崩掉的领域。实际发生的是：软件工程的职位空缺数量在*上升*，他认识的优秀工程师比以往任何时候都忙。真正的分水岭不是\"人 vs AI\"，而是技能代际。用他的话说：\"如果有人还在用 2022 年（ChatGPT 之前）的方式写代码，那他麻烦了。\"解法不是在 AI 能自动化的那 30-40% 上跟它竞争，而是把那部分交出去，转身去补另外 60-70% 的新能力。"}, {"part": "B", "en": "While building their \"AI engineering skills map\", his team spotted a signal that surprised even him: more and more job descriptions ask for \"a very high sense of agency\". The logic chain is short. AI has collapsed the cost of acting on a problem you notice yourself, so the gap between \"wait to be assigned\" and \"notice it and fix it\" has widened dramatically — and companies will hire for the second. He adds a layer the interviewer raised: in big companies, engineers with good ideas are often told to stay in their swim lane, usually because the manager's own KPI is tied up in that boundary. His conclusion is that the companies creating value going forward will be the ones with a culture of learn AI → build fast → build responsibly → talk to customers, not rigid siloed hierarchies.", "cn": "他团队在做「AI engineering skills map」时，发现一个连他自己都意外的数据信号：越来越多 JD 写着要 \"a very high sense of agency\"（极强的主观能动性）。逻辑链很短：AI 让\"自己发现问题就动手\"的成本大幅下降，于是\"等老板派活\"和\"自己发现就去解决\"的差距被急剧放大 —— 企业会优先招后者。他又加了一层：在大公司里，有创意的工程师常被要求别越界（stay in your swim lane），往往是因为经理自己的 KPI 就押在那个边界上。他的结论是：未来能创造更多价值的公司，是那种鼓励「学 AI → 快速构建 → 负责任地构建 → 跟客户聊」文化的公司，而不是层级森严的筒仓组织。"}, {"part": "B", "en": "His argument here is unusually clean. Nobody can build a plane that is perfectly controllable — the wind will always push it around. Early planes did crash, people did die, and that was genuinely terrible. But it was precisely from those lessons that we learned to control aircraft better, and today flying doesn't require fearing for your life. AI works the same way: models generate tokens stochastically, so no one can perfectly predict the output. There have been real mishaps and real harm. But the way we engineer any system — aircraft, circuits, today's AI — is to scale capability cautiously, measure the deviation in a controlled environment, and shape it back. So we will never perfectly control planes, and we will never perfectly control AI. But we control them well enough that \"losing control\" stops being a science-fiction doomsday scenario.", "cn": "他这段论证结构异常干净。没有人能造出一架\"可被完美操控\"的飞机 —— 风会一直把它吹得东倒西歪。早期飞机确实坠毁、确实有人丧生，那很惨痛。但正是从这些教训里，我们逐步学会了更好地控制飞机，今天坐飞机不再需要恐惧生命。AI 同理：模型是随机生成 token 的，没人能完美预测输出。确实发生过少量事故、造成过真实伤害。但我们工程化任何系统的方式 —— 从飞机到电路到今天的 AI —— 都是谨慎地逐步放大能力、在可控环境里量测偏差、再塑形修正。所以我们永远不会完美控制飞机，也永远不会完美控制 AI；但已经控制得足够好，让\"失去控制\"不再构成一个科幻级别的末日场景。"}, {"part": "B", "en": "For ordinary information, he trusts the big hyperscalers — they will honor their published ToS and privacy statements, because breaching them would be existential to their business model. The tier to watch is the company that quietly rewrites its terms: a popup saying \"we updated our terms, we may retain and train on your data\" that you click through by accident; he decides trust by asking whether protecting user privacy is in the company's culture and DNA. For genuinely sensitive material — MNPI — the options narrow to doing it entirely by hand, or running a local open-weight model only. On local models he's bullish: the latest open-weight models are closing on frontier capability and small enough to run locally, he names recent Meta models and the latest Qwen as good options, but warns that these models change every other week so the best practice is not to be locked into one vendor.", "cn": "对常规信息，他信任头部 hyperscaler —— 他们会 100% 遵守公开的 ToS 和隐私声明，因为违约对长期商业模式是毁灭性的。需要警惕的一档是那些会悄悄改条款的公司：弹窗说\"我们更新了条款，可以保留/训练你的数据\"，不小心点错就授权了；他判断信任与否的标准是看这家公司的\"文化和 DNA\"是否绑定在保护用户隐私上。对真正敏感的信息（MNPI），选项只剩两个：要么纯手工做不用 AI，要么只用本地开源模型。对本地模型他很乐观：最新开放权重模型已逼近前沿能力，而且足够小能在本地跑，他点名 Meta 近期模型和最新版 Qwen 都不错 —— 但提醒这些模型每两周就变，最佳实践是别被绑死在一家。"}, {"part": "B", "en": "He uses a strict definition: able to do any intellectual task a human can do. Measured against that bar, a human can spend five years researching and write a doctoral thesis; a human can drive a truck through dense rainforest after a few dozen minutes of practice. Against that, there remains a long list of things AI cannot do — so his estimate is decades, and he hopes it's only decades. As for why figures like Jensen Huang say AGI has arrived, his answer is economic incentive: OpenAI once had an agreement with Microsoft that created a motive to declare AGI as early as possible (an agreement he notes has since been renegotiated away). Define the bar low enough and you can argue AGI arrived thirty years ago. People disagree on the timeline because they're using different definitions.", "cn": "他采用严格定义：能做人类可以做的任何智力任务。拿这把尺子量：人可以花五年研究写出一篇博士论文；人可以在几十分钟练习后开着卡车穿过茂密雨林。对照之下，AI 做不到的事还有长长一串 —— 所以他的判断是还要数十年，他希望只是数十年。至于黄仁勋等人为什么说 AGI 已经到了，他的解释是经济激励：OpenAI 曾与微软有协议，让 OpenAI 有动机尽早宣布到达 AGI（他提到该协议现已重新谈妥取消）。只要你把门槛定义得足够低，\"AGI 已经到了\"甚至\"30 年前就到了\"都能成立。不同人给出的时间不同，是因为定义不同。"}, {"part": "C", "en": "The most revealing part of the interview is the list of things his own team actually built. The podcast team runs a **guest-scoring** project: it holds the full history of past guests and weights them by whether they've been cited, whether they hold a clear AI position, whether they use AI at their own company, and whether they're a newly emerged AI founder — producing a score out of 40, where 40 means tier one. A second podcast project analyses each episode and suggests questions. On social media, they generate IG and LinkedIn content by loading a personal **dossier** — tone of voice, personal profile, business strategy — so the output already knows the facts and knows how to talk. In marketing, one colleague built a **desktop app running on their Mac**: tell it the topic you're about to write on and it crawls the web for related work, highlights it, and lets you chat against \"the draft in progress plus the reference library\" as a whole; a separate dashboard patrols the web for developments worth noticing. In finance, the CFO noticed the team spending hours each week opening documents to reconcile numbers, and simply built a scheduled automation — open the files, run consistency checks, alert the team on anomalies — without waiting for engineering capacity. Recruiting has engineers embedded directly in the team, building internal recruiting tools. One signal worth noting: when he interviews for marketing roles now, he asks directly **\"what have you built?\"** — and he complains that people who present a single dashboard are well behind what even non-engineers on his team produce.", "cn": "访谈里最能说明问题的是他团队真正做出来的那串东西。播客团队有个**「嘉宾评分」**项目：掌握历届嘉宾的全部数据，按是否被引用 / 是否有明确 AI 观点 / 是否在自家公司用 AI / 是否 AI 领域新晋创始人等维度加权，输出满分 40 的评级（40 = tier 1）。另一个播客项目分析每一期节目并给出**提问建议**。社媒上，他们带着个人 **dossier**（语气语调、个人档案、商业策略）生成 IG / LinkedIn 内容，写出来就知道事实、知道该怎么说话。营销侧有位同事**建了个跑在 Mac 上的桌面应用**：准备写某个主题时，它自动爬网找相关工作、高亮出来，还能对着「正在写的稿子 + 相关资料库」整体对话；另有一个 dashboard 在网上巡查值得关注的新动态。财务侧，CFO 发现团队每周花几小时点开文档核对数字，于是**自己搭了定时自动化**：自动打开文件、做一致性检查、有异常就告警团队 —— 不用等工程师排期。招聘团队里直接**嵌了工程师**专门做招聘内部工具。 一个值得注意的信号：他现在面试市场岗位**直接问「你 build 过什么」**，并吐槽只拿出一个 dashboard 的人，比他团队里哪怕非工程师的水平都差得远。"}, {"part": "C", "en": "He now leads a new organization called **Learn Vector**, backed by $100M, with the goal of delivering a one-to-one rather than one-to-many learning experience. He was part of the online course movement fifteen years ago with Coursera, but that was always one-to-many — everyone watched the same video. The technology now makes highly personalized 1:1 experiences possible, and his team expects more results early next year.", "cn": "他现在领导的新组织叫 **Learn Vector**（获 1 亿美元投资），目标是做「一对一」而不是「一对多」的学习体验。他 15 年前参与了在线课程运动（Coursera），但那始终是一对多 —— 大家看同一个视频。现在技术已经允许做出高度个性化的 1v1 体验，团队预计明年初会有更多成果。"}, {"part": "C", "en": "On children he's optimistic — their prospects are bright, this is an exciting era, and they have tools we never had. Two worries though: social media is genuinely bad for kids (even if it gets slightly more blame than it deserves), and AI harms learning. His own practice: teaching his five- and seven-year-old math without a calculator, letting them drill the basics; and unhappy with the typing apps on the market, he wrote a typing app for his daughter himself — she can now type all lowercase letters at seven. His conclusion is that digital tools under adult supervision are good for children; the problem is that too many adults have no time to supervise, and social media's incentive structure points at capturing attention rather than being good for people.", "cn": "关于孩子他很乐观：孩子前途是光明的，这是令人兴奋的时代，他们拥有我们从未有过的工具。但有两处担心：社交媒体对孩子确实不好（虽然可能被指责得略微过头），以及 AI 损害学习。他自己的做法：教 5 岁和 7 岁的孩子数学时**不给计算器**，让他们练基本运算；因为不喜欢市面上的打字学习工具，**亲手给女儿写了个打字 App**（7 岁已能打全小写字母）。结论是：在成人监督下使用数字工具对孩子是好事 —— 问题是太多大人没时间监督，而社交媒体那套激励机制指向\"吸引注意\"而不是\"对人有益\"。"}];
+const E = {
+  youdao: u => 'https://dict.youdao.com/dictvoice?type=1&audio=' + encodeURIComponent(u),
+  google: u => 'https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=en&q=' + encodeURIComponent(u)
+};
+let voices = [], stopFlag = false, audioEl = null;
+const $ = id => document.getElementById(id);
+const list = $('list'), status = $('status');
+
+/* ---------- 渲染 ---------- */
+let html = '', lastPart = '';
+DATA.forEach((d, i) => {
+  if (d.part !== lastPart) { lastPart = d.part; html += '<div class="part-h">Part ' + d.part + '</div>'; }
+  html += '<div class="row" data-i="' + i + '">'
+        + '<div class="en"><span class="num">' + (i+1) + '</span>' + esc(d.en) + '</div>'
+        + (d.cn ? '<div class="cn">' + esc(d.cn) + '</div>' : '')
+        + '</div>';
+});
+list.innerHTML = html;
+function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+/* ---------- 语音引擎检测 ---------- */
+function loadVoices(){
+  const sel = $('voice');
+  voices = speechSynthesis.getVoices().filter(v => /^en/i.test(v.lang));
+  sel.innerHTML = '<option value="">默认语音</option>'
+    + voices.map((v,i) => '<option value="' + i + '">' + v.name + '</option>').join('');
+  if (!voices.length) {
+    $('engine').value = 'youdao';
+    status.innerHTML = '⚠️ 本机没有检测到英文语音包，已自动切换到<b>在线·有道</b>（需要联网）。'
+      + '若无声音可切换到 <b>在线·Google</b>。';
+  } else {
+    status.textContent = '✅ 检测到 ' + voices.length + ' 个英文语音，使用本地离线朗读。';
+  }
+}
+speechSynthesis.onvoiceschanged = loadVoices; loadVoices();
+
+/* ---------- 朗读：本地 ---------- */
+function speakLocal(text, done){
+  if (!('speechSynthesis' in window)) { done(); return; }
+  const u = new SpeechSynthesisUtterance(text);
+  const idx = $('voice').value;
+  if (idx !== '' && voices[idx]) u.voice = voices[idx];
+  u.lang = 'en-US';
+  u.rate = parseFloat($('rate').value);
+  u.onend = done; u.onerror = done;
+  speechSynthesis.speak(u);
+}
+
+/* ---------- 朗读：在线 ---------- */
+function chunks(text, max){
+  const out = []; let cur = '';
+  text.split(/(?<=[.;:!?])\s+|(?<=,)\s+/).forEach(seg => {
+    if ((cur + ' ' + seg).trim().length > max && cur) { out.push(cur.trim()); cur = seg; }
+    else cur = (cur ? cur + ' ' : '') + seg;
+  });
+  // 超长兜底：按空格硬切
+  out.push(cur.trim());
+  const res = [];
+  out.forEach(c => {
+    if (c.length <= max) { if (c) res.push(c); return; }
+    let buf = '';
+    c.split(/\s+/).forEach(w => {
+      if ((buf + ' ' + w).length > max && buf) { res.push(buf); buf = w; } else buf = buf ? buf + ' ' + w : w;
+    });
+    if (buf) res.push(buf);
+  });
+  return res;
+}
+function speakOnline(text, done){
+  const mk = E[$('engine').value] || E.youdao;
+  const arr = chunks(text, 170);
+  let k = 0, failed = 0;
+  (function next(){
+    if (stopFlag || k >= arr.length) { done(); return; }
+    if (audioEl) { audioEl.pause(); }
+    audioEl = new Audio(mk(arr[k])); k++;
+    audioEl.onended = next;
+    audioEl.onerror = () => { failed++; if (failed >= 2) { done(); } else next(); };
+    audioEl.play().catch(() => { failed++; next(); });
+  })();
+}
+
+function speak(text, done){
+  const eng = $('engine').value;
+  if (eng === 'local' && voices.length) speakLocal(text, done);
+  else speakOnline(text, done);
+}
+
+/* ---------- 播放控制 ---------- */
+function highlight(i){
+  document.querySelectorAll('.row.playing').forEach(r => r.classList.remove('playing'));
+  const el = document.querySelector('.row[data-i="' + i + '"]');
+  if (el) { el.classList.add('playing'); el.scrollIntoView({block:'center',behavior:'smooth'}); }
+}
+function clearHL(){ document.querySelectorAll('.row.playing').forEach(r => r.classList.remove('playing')); }
+function cancelAll(){
+  stopFlag = true;
+  if ('speechSynthesis' in window) speechSynthesis.cancel();
+  if (audioEl) { audioEl.pause(); audioEl = null; }
+}
+
+async function playFrom(start){
+  stopFlag = false;
+  for (let i = start; i < DATA.length; i++){
+    if (stopFlag) break;
+    highlight(i);
+    await new Promise(res => speak(DATA[i].en, res));
+    if (stopFlag) break;
+    await new Promise(res => setTimeout(res, +$('gap').value));
+  }
+  clearHL();
+}
+
+list.addEventListener('click', e => {
+  const row = e.target.closest('.row');
+  if (!row) return;
+  cancelAll();
+  const i = +row.dataset.i;
+  stopFlag = false;
+  highlight(i);
+  speak(DATA[i].en, () => {});
+});
+$('playAll').onclick = () => { cancelAll(); playFrom(0); };
+$('stop').onclick = () => { cancelAll(); clearHL(); };
+$('toggleCn').onclick = function(){
+  document.body.classList.toggle('show-cn');
+  this.classList.toggle('on');
+  this.textContent = document.body.classList.contains('show-cn') ? '隐藏中文' : '显示中文';
+};
+$('rate').oninput = () => $('rateVal').textContent = $('rate').value + 'x';
+$('gap').oninput = () => $('gapVal').textContent = ($('gap').value/1000).toFixed(1) + 's';
+$('engine').onchange = function(){
+  if (this.value === 'local' && !voices.length){
+    this.value = 'youdao';
+    status.innerHTML = '本机没有英文语音包，无法使用本地模式。';
+  } else {
+    status.textContent = this.value === 'local' ? '已切换到本地离线朗读。' : '已切换到 ' + this.options[this.selectedIndex].text + '（需要联网）。';
+  }
+};
+</script>
+</body>
+</html>
