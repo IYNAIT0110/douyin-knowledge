@@ -71,6 +71,16 @@
 - **原声金句**（视频为英文时）：英文原句，**不配中文**，留出自己啃的空间
 - 文末保留一份**中文速览落地清单**（无英文），方便快速执行
 
+**每篇还必须生成跟读页**（`make_shadowing.py`）：
+
+```bash
+python make_shadowing.py "notes/YYYY-MM-DD-<主题>-深度总结.md" --part all
+# → shadowing/<同名>-Partall.html
+```
+
+浏览器本地语音朗读，离线可用，中文默认折叠；点句即读，可调语速与句间停顿。用 present_files 展示给用户。
+（`--format mp3` 走 edge-tts 在线合成，本机网络连不上 `speech.platform.bing.com`，默认不用。）
+
 > 参考样板：`notes/2026-09-18-对话吴恩达-AI恐惧与机会-深度总结.md`
 > 注：2026-09-18 的 `AI命名里的小巧思` 那条仍是纯中文版，属历史文件，不作为后续样板。
 
@@ -102,6 +112,7 @@ Whisper 模型（首次转写自动下载到 `C:\Users\tianyi.bu\.cache\huggingf
 | 脚本 | 用途 |
 |------|------|
 | `download_transcribe.py` | 整合脚本：刷 cookie → 下载 → 转写（自动化主调用） |
+| `make_shadowing.py` | 从中英对照版深度总结抽英文，生成跟读 HTML（默认）/ mp3 |
 | `get_douyin_cookies.py` | 单独刷游客 cookie |
 | `transcribe_video.py` | 单独转写本地视频文件 |
 

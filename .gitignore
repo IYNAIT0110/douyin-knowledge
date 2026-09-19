@@ -9,6 +9,10 @@ videos/
 daily/
 transcripts/
 
+# 跟读产物（本地用，不上传）
+shadowing/
+*.mp3
+
 # 工具脚本
 *.py
 __pycache__/
