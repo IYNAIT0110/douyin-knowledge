@@ -9,6 +9,9 @@ videos/
 daily/
 transcripts/
 
+# 词库抓取缓存（构建时用，不上传）
+wordcache/
+
 # mp3 体积大不上传；shadowing/ 下的跟读 HTML 要上传（任何电脑下载即可打开）
 *.mp3
 

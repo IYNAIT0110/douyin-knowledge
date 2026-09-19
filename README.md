@@ -82,14 +82,23 @@
 - **原声金句**（视频为英文时）：英文原句，**不配中文**
 - 文末**中文速览落地清单**（无英文）
 
-#### 跟读页
+#### 跟读页 = 跟读 + 点词词典
 
 ```bash
-python make_shadowing.py "notes/YYYY-MM-DD-<主题>-中英对照.md"
-# → shadowing/YYYY-MM-DD-<主题>-中英对照-跟读.html
+python make_shadowing.py "notes/YYYY-MM-DD-<主题>-中英对照.md"      # 抓词 + 出页（默认）
+python make_shadowing.py "notes/xxx.md" --no-words                   # 跳过词库，快速重排
+python make_shadowing.py "notes/xxx.md" --refresh                    # 忽略缓存重抓
 ```
 
-脚本会自动解析 A/B/C 三段（含 `<details>` 折叠的中文），生成单文件 HTML。**必须保证"任何电脑都能出声"**，语音三档自动降级：
+点一句 → 朗读，**右侧面板同时把这句话拆成单词 chip**；再点任意单词弹出释义卡：
+
+- 音标 / 词性 + 中文释义 / 词形变化（单复数、时态）/ **双语真实例句**（例句可点朗读）
+- ⭐ 可收藏进**生词本**，存 localStorage，关掉浏览器再开还在
+- 带绿色底线的 chip = 词库已收录；未收录的（多为专有名词）会明确提示
+
+词库在**生成 HTML 时**一次性从有道词典 `dict.youdao.com/jsonapi` 抓取，缓存到 `wordcache/`，之后**永久离线可用**（单篇约 660 词条，句内词覆盖率约 98%）。网络不通也不会失败，会沿用已有缓存。
+
+**同样必须保证"任何电脑都能出声"**，语音三档自动降级：
 
 1. **本地语音** —— 浏览器 speechSynthesis，离线、零延迟（有英文语音包时首选）
 2. **在线·有道** —— `dict.youdao.com/dictvoice`，国内可达，不需要本机语音包
@@ -128,7 +137,8 @@ Whisper 模型（首次转写自动下载到 `C:\Users\tianyi.bu\.cache\huggingf
 | 脚本 | 用途 |
 |------|------|
 | `download_transcribe.py` | 整合脚本：刷 cookie → 下载 → 转写（自动化主调用） |
-| `make_shadowing.py` | 从中英对照版深度总结抽英文，生成跟读 HTML（默认）/ mp3 |
+| `make_shadowing.py` | 从中英对照版抽英文 → 跟读 HTML（含点词词典、生词本、三档语音） |
+| `shadow_tpl.py` | 上面的 HTML 模板（拆出来避免单文件过长） |
 | `get_douyin_cookies.py` | 单独刷游客 cookie |
 | `transcribe_video.py` | 单独转写本地视频文件 |
 
@@ -151,6 +161,7 @@ C:\Users\tianyi.bu\.workbuddy\binaries\python\envs\douyin\Scripts\python.exe \
 | `notes/` | **知识产出**，按日期命名：报告 `YYYY-MM-DD.md`、待办 `YYYY-MM-DD-todos.md`、深度总结 `…-深度总结.md`（知识向）+ `…-中英对照.md`（英语向） |
 | `shadowing/` | 跟读 HTML（单文件自带数据，任何电脑可开），随仓库上传 |
 | `transcripts/` | 逐字稿 txt/json，按日期分组（不上传） |
+| `wordcache/` | 词典抓取缓存（构建时用，不上传；删了会自动重抓） |
 | `downloads/` | 视频临时目录（转写后自动删，7 天清理） |
 | `douyin_cookies.txt` | 自动刷新的游客 cookie（不上传） |
 
