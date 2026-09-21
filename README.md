@@ -17,6 +17,20 @@
 
 已在 `download_transcribe.py` 中固化：`refresh_cookies(target_url)` 会先访问目标视频页，cookie 数 ≥20 就不再回退首页；单链接时自动传入该链接，多链接走首页。
 
+### ⚠️ 坑位：多条视频不要并行下载（2026-09-21 修复）
+
+`download()` 原先靠"取 `downloads/` 里 mtime 最大的文件"来定位下载结果。两条视频并行跑时会互相串台 —— **A 转写完其实是 B，而且常常是被截断的 B**（文件还在写入就被读）。2026-09-21 首次踩到：串行重跑后才发现第一份"逐字稿"是第二份视频的前 3 分钟。
+
+已修复：`download()` 改用 yt-dlp `--print after_move:filepath` 返回的真实输出路径（失败才回退排序近似）。
+
+**规则：一次只有一条视频在跑。脚本已经安全了，但 yt-dlp + cookie 刷新仍共享同一份 `douyin_cookies.txt`，串行更省事。**
+
+### ⚠️ 坑位：`make_shadowing.py --no-words` 会覆盖成品（2026-09-21 修复）
+
+`--no-words` 本意是"只想确认一下 Part 分布"，但旧实现把词库置空，`--no-words` 跑一次就把已经做好的 400KB 词典版 HTML 冲成一个 85KB 的空壳。
+
+已修复：先无条件从 `wordcache/` 装载本地缓存，再决定要不要联网补缺漏。**现在 `--no-words` 只影响联网行为，不影响已有词典。**
+
 ## 你要做的（只 1 步）
 
 手机抖音里点"分享" → 飞书 → "抖音收藏"群 → 发送链接。
@@ -178,6 +192,6 @@ C:\Users\tianyi.bu\.workbuddy\binaries\python\envs\douyin\Scripts\python.exe \
 
 ## 已知限制
 
-- 抖音风控可能升级，游客 cookie 若失效，`get_douyin_cookies.py` 会自动重刷，通常能恢复
+- 抖音风控可能升级，游客 cookie 若失效，`get_douyin_cookies.py` 会自动重刷，通常能恢复；同一条链接连刷失败 2 次以上就直接重试一次整个流程（2026-09-21：第一次 24 条 cookie 失败，重跑拿到 37 条即成功）
 - 转写走 CPU，长视频慢；有 NVIDIA 显卡可改 `device=cuda` 提速 5-10 倍
 - 极少数视频（需登录才能观看的私密内容）游客态可能下不到，此时靠口述兜底
