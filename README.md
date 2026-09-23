@@ -45,6 +45,14 @@
    - 首次运行时窗口为 24h；后续每天向前滑动
    - ⚠️ **必须做一次「不限时间」全量拉取复核**（2026-09-18 教训）：用户在运行时刻**之后**分享的视频，任何时窗查询都查不到。全量拉取（群消息总量很小，`has_more=false`）是唯一可靠的兜底 —— 9-17 曾据此误判"无新增"，实际当天下午和晚上各分享了 1 条，直到 9-18 全量复核才发现并补处理
    - 注：`--start/--end` 必须用 **ISO 8601 带 T 分隔符**（`2026-09-18T00:00:00+08:00`），空格分隔会报 validation 错误
+   - ⚠️ **lark-cli 是 shell 脚本，必须用 `bash` 调用，不能用 `node`**（2026-09-23 踩坑）。用 `node <path>` 会在第 2 行 `basedir=$(dirname ...)` 处报 `SyntaxError: missing ) after argument list`。正确写法：
+     ```bash
+     bash "C:/Users/tianyi.bu/.workbuddy/binaries/node/cli-connector-packages/lark-cli" \
+       im +chat-messages-list --chat-id "oc_55515e4b712c572e6f69c8c839e2aadc" \
+       --start "2026-09-23T00:00:00+08:00" --end "2026-09-23T23:59:59+08:00" --page-size 50
+     ```
+   - ⚠️ **重定向时不要把 stderr 并进 stdout**：lark-cli 会往 **stderr** 打 `warning: reactions_partial_failed: 1 message(s) failed (...)`（`om_x100b651565a584a0b1b47efed0039bd` 这条已删除消息恒定触发）。用 `2>&1` 会把 warning 顶在 JSON 前面，导致 `json.load` 报 `Expecting value: line 1 column 1`。要 `2>/dev/null`。
+   - ⚠️ 跨 bash / Windows Python 传文件时**不要用 `/tmp`**：Git Bash 的 `/tmp` 对 Windows 版 Python 不可见（FileNotFoundError）。写到仓库内的临时文件再读。
 2. `download_transcribe.py` 逐条处理：
    - Playwright 无头刷新游客 cookie（无需登录）
    - yt-dlp 下载视频
