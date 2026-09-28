@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>2026-09-28-马斯克什么是真正的朋友-中英对照</title>
+<style>
+:root{
+  --bg:#fbfaf8; --card:#fff; --line:#e6e2dc; --tx:#1f2328; --tx2:#6b7280; --tx3:#9ca3af;
+  --accent:#2f6f4f; --soft:#e8f1ec; --cn:#8a8578; --hl:#fdf3d0; --warn:#b45309;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);
+  font-family:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;line-height:1.7}
+header{position:sticky;top:0;z-index:20;background:rgba(251,250,248,.96);backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line);padding:11px 18px}
+h1{font-size:15.5px;margin:0 0 8px;font-weight:650;line-height:1.4}
+h1 small{font-weight:400;color:var(--tx2);font-size:12.5px}
+.bar{display:flex;flex-wrap:wrap;gap:7px;align-items:center;font-size:12.5px}
+button,select{font:inherit;font-size:12.5px;padding:4px 10px;border:1px solid var(--line);
+  background:var(--card);color:var(--tx);border-radius:7px;cursor:pointer}
+button:hover{border-color:var(--accent);color:var(--accent)}
+button.on{background:var(--soft);border-color:var(--accent);color:var(--accent)}
+label{display:flex;align-items:center;gap:5px;color:var(--tx2)}
+input[type=range]{width:88px}
+#status{font-size:12px;color:var(--tx2);margin-top:5px}
+.wrap{display:flex;gap:16px;max-width:1400px;margin:0 auto;padding:16px 18px 60px;align-items:flex-start}
+main{flex:1 1 auto;min-width:0}
+aside{flex:0 0 40%;max-width:520px;position:sticky;top:118px;max-height:calc(100vh - 136px);
+  overflow:auto;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.part-h{margin:20px 0 9px;font-size:13px;font-weight:650;color:var(--accent)}
+.row{background:var(--card);border:1px solid var(--line);border-radius:10px;
+  padding:10px 12px;margin-bottom:7px;cursor:pointer;transition:.15s}
+.row:hover{border-color:var(--accent)}
+.row.playing{background:var(--soft);border-color:var(--accent)}
+.row.active{border-color:var(--accent);box-shadow:0 0 0 2px rgba(47,111,79,.13)}
+.en{font-size:15.5px}
+.num{display:inline-block;min-width:30px;color:var(--tx2);font-size:12px;font-variant-numeric:tabular-nums}
+.cn{display:none;margin-top:7px;padding-top:7px;border-top:1px dashed var(--line);color:var(--cn);font-size:13px}
+body.show-cn .cn{display:block}
+.ph{font-size:12.5px;color:var(--tx2);margin:2px 0 10px;line-height:1.65}
+.chips{display:flex;flex-wrap:wrap;gap:4px;line-height:2;margin-bottom:12px}
+.chip{border:1px solid var(--line);border-radius:6px;padding:1px 6px;font-size:14.5px;cursor:pointer;
+  background:#fdfdfc;transition:.12s}
+.chip:hover{border-color:var(--accent);background:var(--soft)}
+.chip.sel{background:var(--hl);border-color:#d9b648}
+.chip.dict{border-bottom:2px solid #9ccbb0}
+.punct{color:var(--tx3);font-size:14.5px}
+.card{border-top:1px solid var(--line);padding-top:12px;min-height:130px}
+.hd{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.word{font-size:21px;font-weight:650}
+.phn{color:var(--tx2);font-size:13px}
+.badge{font-size:11px;padding:1px 7px;border-radius:20px;background:var(--soft);
+  color:var(--accent);border:1px solid #cfe3d7}
+.badge.lv{background:#fdf0e3;color:var(--warn);border-color:#f0dcbc}
+.defs{margin:6px 0 0;padding-left:18px;font-size:14px}
+.defs li{margin-bottom:3px}
+.forms{font-size:12px;color:var(--tx2);margin-top:8px}
+.sub{margin-top:12px;font-size:12px;font-weight:650;color:var(--accent)}
+.ex{border-left:2px solid #cfe3d7;padding:4px 0 4px 10px;margin:6px 0;font-size:13.5px;cursor:pointer}
+.ex:hover{border-left-color:var(--accent)}
+.ex .cnx{color:var(--cn);font-size:12.5px}
+.empty{color:var(--tx3);font-size:13.5px;padding:18px 0}
+.hint{font-size:12.5px;color:var(--tx2);background:#f2f4f3;border-radius:8px;
+  padding:9px 12px;margin-bottom:12px;line-height:1.7}
+.vocab{margin-top:12px;border-top:1px dashed var(--line);padding-top:10px}
+.vocab ul{padding-left:16px;margin:6px 0 0;font-size:13px}
+.vocab li{margin-bottom:2px}
+.vw{cursor:pointer;font-weight:600}
+.vw:hover{color:var(--accent)}
+.del{color:#c0c4c9;cursor:pointer;margin-left:6px}
+footer{max-width:1400px;margin:0 auto;padding:0 18px 30px;font-size:12px;color:var(--tx2)}
+@media (max-width:1000px){
+  .wrap{flex-direction:column}
+  aside{flex:1 1 auto;width:100%;max-width:none;position:static;max-height:none}
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>2026-09-28-马斯克什么是真正的朋友-中英对照 <small>· 跟读 ＋ 点词查询</small></h1>
+  <div class="bar">
+    <button id="playAll">&#9654; 播放全部</button>
+    <button id="stop">&#9632; 停止</button>
+    <button id="toggleCn">显示中文</button>
+    <select id="engine" title="语音引擎">
+      <option value="local">本地语音（离线）</option>
+      <option value="youdao">在线·有道</option>
+      <option value="google">在线·Google</option>
+    </select>
+    <select id="voice"><option value="">默认语音</option></select>
+    <label>语速 <input type="range" id="rate" min="0.5" max="1.2" step="0.05" value="0.85">
+      <span id="rateVal">0.85x</span></label>
+    <label>停顿 <input type="range" id="gap" min="0" max="2500" step="100" value="1200">
+      <span id="gapVal">1.2s</span></label>
+  </div>
+  <div id="status"></div>
+</header>
+<div class="wrap">
+  <main>
+    <div class="hint">点一句 → 开始朗读，右侧同时把这句话拆成单词。<b>再点任意单词</b>看音标、释义、词形变化和真实例句。底部绿线的词表示词库已收录。</div>
+    <div id="list"></div>
+  </main>
+  <aside>
+    <div id="sent" class="ph">点左侧任意一句开始</div>
+    <div id="chips" class="chips"></div>
+    <div id="card" class="card"><div class="empty">选一个单词查看释义与用法</div></div>
+    <div class="vocab"><span id="vocabH">⭐ 生词本（0）</span><ul id="vocab"></ul></div>
+  </aside>
+</div>
+<footer>共 7 句 · 55 词条 · 数据与词库全部内嵌，离线可用</footer>
+<script>
+const DATA = [{"part": "A", "en": "Everyone likes you when the chips are up, but who likes you when the chips are down?", "cn": "顺境时人人都喜欢你，可一旦你落难了，还有谁喜欢你？", "tok": [["Everyone", "everyone"], [" ", ""], ["likes", "like"], [" ", ""], ["you", ""], [" ", ""], ["when", "when"], [" ", ""], ["the", "the"], [" ", ""], ["chips", "chip"], [" ", ""], ["are", ""], [" ", ""], ["up", "up"], [",", ""], [" ", ""], ["but", "but"], [" ", ""], ["who", "who"], [" ", ""], ["likes", "like"], [" ", ""], ["you", ""], [" ", ""], ["when", "when"], [" ", ""], ["the", "the"], [" ", ""], ["chips", "chip"], [" ", ""], ["are", ""], [" ", ""], ["down", "down"], ["?", ""]]}, {"part": "A", "en": "A friend in need is a friend indeed.", "cn": "患难见真情。", "tok": [["A", "a"], [" ", ""], ["friend", "friend"], [" ", ""], ["in", "in"], [" ", ""], ["need", "need"], [" ", ""], ["is", ""], [" ", ""], ["a", "a"], [" ", ""], ["friend", "friend"], [" ", ""], ["indeed", "inde"], [".", ""]]}, {"part": "A", "en": "Like, if someone's still supporting you when the chips are down, that's a friend.", "cn": "就是说，如果你落难时还有人支持你，那才叫朋友。", "tok": [["Like", "like"], [",", ""], [" ", ""], ["if", "if"], [" ", ""], ["someone's", "someone"], [" ", ""], ["still", "still"], [" ", ""], ["supporting", "support"], [" ", ""], ["you", ""], [" ", ""], ["when", "when"], [" ", ""], ["the", "the"], [" ", ""], ["chips", "chip"], [" ", ""], ["are", ""], [" ", ""], ["down", "down"], [",", ""], [" ", ""], ["that's", "that"], [" ", ""], ["a", "a"], [" ", ""], ["friend", "friend"], [".", ""]]}, {"part": "A", "en": "I guess a friend is someone who's going to support you in difficult times, I suppose.", "cn": "我想，朋友大概就是那种会在困难时期支持你的人吧。", "tok": [["I", ""], [" ", ""], ["guess", "guess"], [" ", ""], ["a", "a"], [" ", ""], ["friend", "friend"], [" ", ""], ["is", ""], [" ", ""], ["someone", "someone"], [" ", ""], ["who's", "who"], [" ", ""], ["going", "go"], [" ", ""], ["to", "to"], [" ", ""], ["support", "support"], [" ", ""], ["you", ""], [" ", ""], ["in", "in"], [" ", ""], ["difficult", "difficult"], [" ", ""], ["times", "time"], [",", ""], [" ", ""], ["I", ""], [" ", ""], ["suppose", "suppose"], [".", ""]]}, {"part": "B", "en": "You know, if somebody's not supporting you, there's like fair where the friends are useless. You know, they're not real friends. It's not just a chips thing. There's sort of popularity waxes and waves.", "cn": "你知道的，如果有人并不支持你，那……朋友们就没用了。你知道的，他们不是真正的朋友。这不只是筹码的事。人气这东西，多少是有盈有亏的。", "tok": [["You", ""], [" ", ""], ["know", "know"], [",", ""], [" ", ""], ["if", "if"], [" ", ""], ["somebody's", "somebody"], [" ", ""], ["not", "not"], [" ", ""], ["supporting", "support"], [" ", ""], ["you", ""], [",", ""], [" ", ""], ["there's", "there"], [" ", ""], ["like", "like"], [" ", ""], ["fair", "fair"], [" ", ""], ["where", ""], [" ", ""], ["the", "the"], [" ", ""], ["friends", "friend"], [" ", ""], ["are", ""], [" ", ""], ["useless", "useless"], [".", ""], [" ", ""], ["You", ""], [" ", ""], ["know", "know"], [",", ""], [" ", ""], ["they're", "they're"], [" ", ""], ["not", "not"], [" ", ""], ["real", "real"], [" ", ""], ["friends", "friend"], [".", ""], [" ", ""], ["It's", "it's"], [" ", ""], ["not", "not"], [" ", ""], ["just", "just"], [" ", ""], ["a", "a"], [" ", ""], ["chips", "chip"], [" ", ""], ["thing", "thing"], [".", ""], [" ", ""], ["There's", "there"], [" ", ""], ["sort", "sort"], [" ", ""], ["of", "of"], [" ", ""], ["popularity", "popularity"], [" ", ""], ["waxes", "wax"], [" ", ""], ["and", "and"], [" ", ""], ["waves", "waf"], [".", ""]]}, {"part": "C", "en": "I mean, I'm not sort of, you know, going on like friend, friend hunts.", "cn": "", "tok": [["I", ""], [" ", ""], ["mean", "mean"], [",", ""], [" ", ""], ["I'm", "i'm"], [" ", ""], ["not", "not"], [" ", ""], ["sort", "sort"], [" ", ""], ["of", "of"], [",", ""], [" ", ""], ["you", ""], [" ", ""], ["know", "know"], [",", ""], [" ", ""], ["going", "go"], [" ", ""], ["on", "on"], [" ", ""], ["like", "like"], [" ", ""], ["friend", "friend"], [",", ""], [" ", ""], ["friend", "friend"], [" ", ""], ["hunts", "hunt"], [".", ""]]}, {"part": "C", "en": "I mean, I think it is just people that you've resonated with somewhat on an emotional and intellectual level.", "cn": "", "tok": [["I", ""], [" ", ""], ["mean", "mean"], [",", ""], [" ", ""], ["I", ""], [" ", ""], ["think", "think"], [" ", ""], ["it", ""], [" ", ""], ["is", ""], [" ", ""], ["just", "just"], [" ", ""], ["people", "people"], [" ", ""], ["that", "that"], [" ", ""], ["you've", "you've"], [" ", ""], ["resonated", "resonat"], [" ", ""], ["with", "with"], [" ", ""], ["somewhat", "somewhat"], [" ", ""], ["on", "on"], [" ", ""], ["an", "an"], [" ", ""], ["emotional", "emotional"], [" ", ""], ["and", "and"], [" ", ""], ["intellectual", "intellectual"], [" ", ""], ["level", "level"], [".", ""]]}];
+const BANK = {"everyone": {"w": "everyone", "ph": "ˈevriwʌn", "defs": ["pron. 每个人，人人，大家"], "forms": [], "ex": [["The news astonished everyone.", "这消息使大家十分惊讶。"], ["Everyone began talking at once.", "大家同时开始讲话。"]], "lv": "中考"}, "like": {"w": "like", "ph": "laɪk", "defs": ["prep. 像，如同；符合……的方式；（指某人常做的事）符合……的特点，像……才会；（用于询问）……怎么样；例如，好比；（用于否定式短语中）比得上；大约，左右", "v. 喜欢，喜爱；希望，想要；（用于请求）想要，希望得到；喜欢（做某事、习惯某事）；（用于询问）你觉得……怎么样；对……反感，讨厌；喜好（某种环境）", "conj. 像……一样，如同；好像，似乎", "n. 喜好，爱好（常复数）；类似或同类的人或物", "adj. 类似的，相似的；（画像，图像）逼真的，像的", "adv. （非正式口语，思考说下句话、解释或举例时用）大概，可能；（非正式口语）我说，他说，她说；（非正式口语，代替as）和…一样，像；（非正式口语，代替as）和……一样，像", "【名】 （Like）（美、俄、印、英、巴）莉凯（人名）"], "forms": ["复数 likes", "第三人称单数 likes", "现在分词 liking", "过去式 liked", "过去分词 liked"], "ex": [["It tastes like chocolate.", "它吃起来像巧克力。"], ["I'd like an explanation.", "我想要一个解释。"]], "lv": "中考"}, "chip": {"w": "chip", "ph": "tʃɪp", "defs": ["n. 炸薯条，炸薯片；芯片；碎块，碎屑；缺口，豁口；筹码；撮球，切球；木条", "v. 打破，弄缺；（尤指用工具）削下，凿下；切成细条；撮球，挑球"], "forms": ["复数 chips", "第三人称单数 chips", "现在分词 chipping", "过去式 chipped", "过去分词 chipped"], "ex": [["The cup had a small chip.", "这个杯子有个小缺口。"], ["Today's silicon chip-based computers can't come close.", "现今的基于芯片的计算机根本比不上。"]], "lv": "中考"}, "need": {"w": "need", "ph": "niːd", "defs": ["v. 需要；（表示应该或不得不做）有必要；需要", "n. 需要，必须； 特别需要，迫切要求；需要的事物，欲望；（食物、钱或生活来源的）短缺，缺乏", "aux. 必要（用于劝告或建议）"], "forms": ["复数 needs", "第三人称单数 needs", "现在分词 needing", "过去式 needed", "过去分词 needed"], "ex": [["Children need their parents.", "孩子们需要父母。"], ["We need more storage now.", "现在我们需要更多的贮存场所。"]], "lv": "中考"}, "someone": {"w": "someone", "ph": "ˈsʌmwʌn", "defs": ["pron. 有人，某人；重要人物"], "forms": [], "ex": [["Someone threw an apple core.", "有人扔了一个苹果核。"], ["There's someone at the door.", "门口有个人。"]], "lv": "中考"}, "support": {"w": "support", "ph": "səˈpɔːrt", "defs": ["v. 支持，拥护，鼓励；帮助，援助；支撑，承受（人或建筑物等的重量）；供养，赡养；资助，赞助；追随（或支持）（某个运动队）；证实，确认；（计算机，操作系统）支持（程序，语言，装置的）运行 ；支持……的生存；忍受，容忍；（在流行音乐会上）当助演，担任演出嘉宾；支付……费用，（尤指）用钱维持（不良嗜好，如毒品）；胜任", "n. 支持，拥护；帮助，援助；赞助，资助；支撑物，支柱；（身体部位的）支持器，托；支撑，支承；（音乐会、演出的）助演演员，助演乐队；证实，证明；信息供应，信息支持；（战争中的）支援；抚养，供养；支持者，拥护者"], "forms": ["复数 supports", "第三人称单数 supports", "现在分词 supporting", "过去式 supported", "过去分词 supported"], "ex": [["We assured him of our support.", "我们向他保证给予支持。"], ["We offer free technical support.", "我们免费提供技术支持。"]], "lv": "中考"}, "go": {"w": "go", "ph": "ɡoʊ", "defs": ["v. 去，走；（尤指与某人）去（某处或出席某项活动）；可能要，打算做；移动，行走；在移动中做；做某个动作；离开；（为某目的）去（某处）；去做（某事）；被发送，被传递；参加（电视或电台节目）；通向，延伸到；上升；放在（通常的位置上）；放得进，适合；相配，协调；除尽，除；进行，进展；被接受，被允许；开始做（某事），进入（某种状态）；变为，变得（尤指朝坏的方面）；处于（尤指令人不快的状况）；（故事、歌词等）内容是；发出（某种声音）；发出信号（或警告）；说；开始（活动）；走开，滚开；参与（表示对所提到行为不赞成）；运转，工作；停止正常运转；消失，不见；得辞掉，被扔掉；（官能）衰退，下降；死亡；用掉，花掉；卖掉，归于；出价购买；促成，显示；流逝，消逝；继续，持续；上厕所；（某人的话）算数；（决定、判决等）对…...不利；取得（某成绩、比分等）", "n. （游戏或活动中）轮到的机会；尝试；精力，活力；某事顺利进行；围棋", "adj. 运行正常的"], "forms": ["复数 goes", "第三人称单数 goes", "现在分词 going", "过去式 went", "过去分词 gone或been"], "ex": [["\"Go! Please go.\"—\"You must be joking!\"", "“走吧！请走吧。”—“你一定是在开玩笑！”"], ["Very well, if you want to go, go you shall.", "很好，如果你想走的话，你可以走了。"]], "lv": "中考"}, "time": {"w": "time", "ph": "taɪm", "defs": ["n. （以分钟、小时、天等计量的）时间；（钟表上的）时刻；（世界各地不同的）计时体系；（某事发生或应该发生的）时候；一段时间，某段日子；规定时间，可用时间；时代，时期；时光，岁月；生命（期），期限；次，回；倍（times）；完成（竞赛等）的时间；（棒球，美橄）暂停；拍子，节奏；（用于报刊名）时报（the Times）；（酒吧）打烊时间；刑期；服役期；计时工资率；分娩时间；学徒期", "v. 为……安排时间；把握（击球、射门等）的时机；为……计时，测定……所需的时间", "conj. 乘以（times）", "adj. 定时的，定期的，分期的", "【名】 （Time）（俄）季梅，（罗）蒂梅，（英）泰姆（人名）"], "forms": ["复数 times", "第三人称单数 times", "现在分词 timing", "过去式 timed", "过去分词 timed"], "ex": [["Time is like a wild donkey. Once it starts running, it never stops.", "时间像一头野驴呀，跑起来就不停。"], ["This time they've messed up big time!", "这一次他们把事情搞得糟透了！"]], "lv": "中考"}, "know": {"w": "know", "ph": "noʊ", "defs": ["v. 知道；认识到，懂得；熟悉，了解；确信，确定；把……看作是；将……称为；认出，辨认出；能区分；精通，掌握；经历，体验"], "forms": ["第三人称单数 knows", "现在分词 knowing", "过去式 knew", "过去分词 known"], "ex": [["You wouldn't know him.", "你一定不认识他。"], ["You don't know jack.", "你什么都不知道。"]], "lv": "中考"}, "they're": {"w": "they're", "ph": "ˈðer", "defs": ["abbr. 他们（是），她们（是），它们（是）：they are 的缩约形式，口语中常用。"], "forms": [], "ex": [["They're completely unmusical.", "他们彻底是五音不全。"], ["They're both playing excellently.", "他们演奏得都很棒。"]], "lv": null}, "real": {"w": "real", "ph": "ˈriːəl", "defs": ["adj. 实际存在的，非想象的；名副其实的；真正的，真实的；真的，非人工的；真诚的；强烈的；确实重大的；十足的，绝对的（用来加强语气）；（数量、数字）真实的，实际的；（光学）（图像）实的；（书或电影中的场景）逼真的，似真的；（哲学）实在的", "adv. 很，非常地", "n. 雷阿尔（巴西1994年以来的基本货币单位，等于100分）；雷阿尔（多个西班牙语国家以前的硬币和货币单位）", "【名】 （Real）（德、西、葡、法）雷亚尔，（英）里尔（人名）"], "forms": ["复数 reals或reales或reais或reis"], "ex": [["She's a real cosmopolitan.", "她是个真正的四海为家的人。"], ["Are those real flowers?", "那些是真花吗？"]], "lv": "中考"}, "it's": {"w": "it's", "ph": "ɪts", "defs": ["abbr. 它是（it is 的缩约形式）；它已，它有（it has 的缩约形式，尤作助动词）"], "forms": [], "ex": [["It's just as dramatic as a film, only it's real.", "这真和电影一样富有戏剧性，只不过它是现实。"], ["It's not rubbish—it's true!", "这不是瞎说—是真的！"]], "lv": null}, "thing": {"w": "thing", "ph": "θɪŋ", "defs": ["n. 东西，物；（无生命的）物体，物件；个人物品，衣物（things）；器具，用品（things）；情形，事件；行为，活动；想法，观点；情况，形势（things）；……之类的东西，特定的事物；需要的东西，适当的东西；事实本身；（生活的）方面；目标，目的；生物，有生命的东西；家伙，东西（指人或动物，常带感情色彩）；（用于强调）任何东西；（某人喜欢或擅长的）事情；（对某事物或某人的）喜欢，憎恶；烂东西，破烂玩意儿"], "forms": ["复数 things"], "ex": [["Mario said the very same thing.", "马里奥说的完全是同一件事。"], ["Then a strange thing happened.", "接着一件怪事发生了。"]], "lv": "中考"}, "mean": {"w": "mean", "ph": "miːn", "defs": ["v. 意味着；表示……的意思，作……的解释；打算，意欲；使专门用于；导致，结果是；十分熟识；当真，说到做到；对某人重要", "adj. 吝啬的，小气的；不善良的，刻薄的；要发怒的；熟练的，出色的；平均的；简陋的，破旧的；微薄的；出身卑贱的，社会地位低下的；中庸的，中等的；凶狠的，好斗的", "n. 中庸，折衷；平均数，中数；中间点", "【名】 （Mean）（柬）棉（人名）"], "forms": ["复数 means", "第三人称单数 means", "现在分词 meaning", "过去式 meant", "过去分词 meant", "比较级 meaner或more mean", "最高级 meanest或most mean"], "ex": [["What does this sentence mean?", "这个句子是什么意思？"], ["You can't possibly mean that!", "你绝不会是那个意思吧！"]], "lv": "中考"}, "think": {"w": "think", "ph": "θɪŋk", "defs": ["v. 认为，以为；明白（用于问句表气愤、吃惊）；觉得；考虑，思考；想出，想象；料想，预料；想要，打算；想起，记得；琢磨，寻思；对……评价（很高）；为……着想；想来，想想看；所指的是；具有某种思维方式；只想，对……着迷；边想边说出声来，自言自语", "n. 想，思索，思考", "adj. 思想的"], "forms": ["第三人称单数 thinks", "现在分词 thinking", "过去式 thought", "过去分词 thought"], "ex": [["I think their methods stink.", "我觉得他们的方法令人讨厌。"], ["I think we've met before.", "我觉得我们以前见过面。"]], "lv": "中考"}, "people": {"w": "people", "ph": "ˈpiːp(ə)l", "defs": ["n. 人，人类；人们，大家（the people）；平民，老百姓（the people）；民族，种族（peoples）；（具有共同品质、兴趣等的）人员，团体；与某人有联系的人们（one's people）；各位，诸位；（审判中的）公诉人（the People）", "v. 居住在，定居于；充满，充斥着（某种类型的人）"], "forms": ["复数 people或peoples", "第三人称单数 peoples", "现在分词 peopling", "过去式 peopled", "过去分词 peopled"], "ex": [["People were talking animatedly.", "人们热烈地交谈着。"], ["She tends to annoy people.", "她的举止往往惹人烦。"]], "lv": "中考"}, "you've": {"w": "you've", "ph": "juːv", "defs": ["abbr. you have 的缩略形式（口语中常见，尤用于 have 作助动词时）：你已，你有"], "forms": [], "ex": [["Look what you've done!", "瞧你都干了些什么！"], ["You've betrayed their trust.", "你辜负了他们的信任。"]], "lv": null}, "intellectual": {"w": "intellectual", "ph": "ˌɪntəˈlektʃuəl", "defs": ["adj. 智力的，理智的；才智超群的；需智力的；思想的，思维的", "n. 知识分子"], "forms": ["复数 intellectuals", "比较级 more intellectual", "最高级 most intellectual"], "ex": [["He was an intellectual, scholarly man.", "他是一个聪明博学的人。"], ["They were very intellectual and witty.", "他们非常聪明、机智。"]], "lv": "高考"}, "friend": {"w": "friend", "ph": "frend", "defs": ["n. 朋友，友人；（社交网站上的）好友；（与……是） 朋友，朋友关系（friends）；（组织或政治运动等的）支持者，（尤指）赞助者；自己人，同盟者；熟悉（或有帮助）的事物；相识的人，（偶然遇见的）陌生人（常作礼貌称呼语或讽刺用语）；友好国家；（议员间或律师间的一种称呼）朋友，阁下，同人；（基督教）公谊会教友，贵格会成员，教友派信徒（Friend）", "v. （在社交网站上） 把（某人）加为好友；与……为友，帮助", "【名】 （Friend）（英）弗兰德（人名）"], "forms": ["复数 friends", "第三人称单数 friends", "现在分词 friending", "过去式 friended", "过去分词 friended"], "ex": [["She's a very special friend.", "她是我特别要好的朋友。"], ["I caught him snogging my friend.", "他正吻我朋友，让我给撞见了。"]], "lv": "中考"}, "inde": {"w": "inde", "ph": "", "defs": ["n. （Inde）（美）印出（人名）"], "forms": [], "ex": [["This article presents elementary situation and technique of paper manufacture with bamboo pulp after investigation in Inde.", "本文介绍了赴印度竹子考察总结中有关竹材制浆造纸的基本概况和技术。"]], "lv": null}, "guess": {"w": "guess", "ph": "ɡes", "defs": ["v. 猜测，估计；猜中，猜到；认为，以为", "n. 猜测，推测", "【名】 （Guess）（英）格斯，（德）居斯（人名）"], "forms": ["复数 guesses", "第三人称单数 guesses", "现在分词 guessing", "过去式 guessed", "过去分词 guessed"], "ex": [["Can you guess where I've been?", "你能猜出我去什么地方了吗？"], ["'Guess what?' she said archly.", "“猜猜看？”她调皮地说道。"]], "lv": "中考"}, "difficult": {"w": "difficult", "ph": "ˈdɪfɪkəlt", "defs": ["adj. 困难的，费力的；不友好的，难对付的"], "forms": [], "ex": [["The exam was quite difficult.", "这场考试相当难。"], ["The exam was pretty difficult.", "这场考试相当难。"]], "lv": "中考"}, "suppose": {"w": "suppose", "ph": "səˈpoʊz", "defs": ["v. 推断，料想，猜想；假设，假定，设想；预期，需要，以……为条件；相信，认为（某事物是可能的）；（婉转表达）我看，要我说，要不；（因处于某种境地或因约定）必须做（be supposed to do sth.）；我看（用于生气地表示预料某事属实）"], "forms": ["第三人称单数 supposes", "现在分词 supposing", "过去式 supposed", "过去分词 supposed"], "ex": [["Yanzi, how am I supposed to live without you?", "燕子，没有你，我怎么活啊！"], ["I suppose you think you're funny.", "我想你认为自己很有趣。"]], "lv": "中考"}, "somebody": {"w": "somebody", "ph": "ˈsʌmbɑːdi", "defs": ["pron. 某人，有人；重要人物，当权人物", "n. 大人物，重要人物"], "forms": ["复数 somebodies"], "ex": [["Somebody should have told me.", "应该有人告诉我才是。"], ["Somebody had wiped all the tapes.", "有人把所有磁带上录制的内容都抹掉了。"]], "lv": "中考"}, "fair": {"w": "fair", "ph": "fer", "defs": ["adj. 公平的；合理的，公正的；相当好的；（数量、大小）相当大的；浅色的，（肤色）白皙的，（头发）金色的；晴朗的；顺风的；普通的；美丽的；界内的；（手段，方法）温和的，非暴力的；（言语，谈话，许诺）花言巧语的", "adv. 公平地，公正地；非常；正面地，直接地；清楚地", "n. 集市，展览会；露天游乐场；庙会；义卖会；牲畜市场；美女；职业介绍会", "v. 变得晴朗；使（车辆，船舶，飞机）具有流线型", "【名】 （Fair）（英、芬）费尔（人名）"], "forms": ["复数 fairs", "第三人称单数 fairs", "现在分词 fairing", "过去式 faired", "过去分词 faired", "比较级 fairer", "最高级 fairest"], "ex": [["The punishment was very fair.", "这个处罚很公正。"], ["Blue suited her fair colouring.", "蓝色适合于她白皙的肤色。"]], "lv": "中考"}, "useless": {"w": "useless", "ph": "ˈjuːsləs", "defs": ["adj. 无用的，无价值的；差劲的，无能的；无效的，徒劳的；（身体一部分或心智因有病或受到损害而）丧失功能的"], "forms": [], "ex": [["She knew it was useless to protest.", "她知道抗议是没用的。"], ["This pen is useless.", "这支笔没用了。"]], "lv": "四级"}, "sort": {"w": "sort", "ph": "sɔːrt", "defs": ["n. 种类，品种；某一种（或某一类）人；（计算机对信息的）分类，排序；程度，方式", "v. 整理，把……分类，拣选；妥善处理，安排妥当；交往；协调"], "forms": ["复数 sorts", "第三人称单数 sorts", "现在分词 sorting", "过去式 sorted", "过去分词 sorted"], "ex": [["He's a reasonable sort of person.", "他是那种通情达理的人。"], ["So that's twenty of each sort, right?", "那么，每一种都是二十个，对不对？"]], "lv": "中考"}, "popularity": {"w": "popularity", "ph": "ˌpɑːpjuˈlærəti", "defs": ["n. 流行，普及，受欢迎"], "forms": [], "ex": [["His popularity has slipped recently.", "近来他已不如过去那样受欢迎。"], ["Her popularity clearly shows no sign of waning.", "她的受欢迎程度显然没有显示出下降的迹象。"]], "lv": "中考"}, "wax": {"w": "wax", "ph": "wæks", "defs": ["n. 蜡，蜂蜡；耳垢； 一阵愤怒；唱片；类似蜡的黏性物质（尤指液体或碳氢化合物）", "v. 给……上（或打）蜡；用蜡除去（身体部位）的毛发；（月亮）渐圆，渐满；（带着某种情绪）说，写；（数量、规模等）增加，变大；把……灌制成唱片", "adj. 蜡制的，似蜡的", "【名】 （Wax）（德、罗、匈、英）瓦克斯（人名）"], "forms": ["复数 waxes", "第三人称单数 waxes", "现在分词 waxing", "过去式 waxed", "过去分词 waxed"], "ex": [["It was recorded on a wax cylinder.", "它被刻录在了蜡柱上。"], ["Wax polish preserves wood and leather.", "上光蜡可保护木材和皮革。"]], "lv": "高考"}, "waf": {"w": "waf", "ph": "wæf", "defs": ["abbr. 空军妇女队（Women in the Air Force）"], "forms": [], "ex": [["Disadvantages of software WAF solutions.", "软件WAF方案也并非完美无缺，其缺点如下。"], ["This document outlines different WAF functionality.", "该文档概览了不同的WAF功能。"]], "lv": null}, "i'm": {"w": "i'm", "ph": "aɪm", "defs": ["abbr. I am 的缩略式（通常译作“我是”）"], "forms": [], "ex": [["I'm not American, I'm Canadian.", "我不是美国人，我是加拿大人。"], ["I'm bushed. I'm going to bed.", "我累坏了，要睡觉了。"]], "lv": null}, "hunt": {"w": "hunt", "ph": "hʌnt", "defs": ["v. 打猎，猎取；搜寻，搜索；追踪，追捕；（骑马用猎犬）猎（狐）；摆动，振荡", "n. 搜索，寻找；打猎，狩猎；（英国）猎狐活动；（英国经常举行猎狐运动的）猎狐队伍；猎区，狩猎场；摆动，振荡", "【名】 （Hunt）（美）安（人名）"], "forms": ["复数 hunts", "第三人称单数 hunts", "现在分词 hunting", "过去式 hunted", "过去分词 hunted"], "ex": [["They sleep by day and hunt by night.", "他们白天睡觉，夜晚捕猎。"], ["As a child I learned to hunt and fish.", "我孩提时代就学会了打猎和捕鱼。"]], "lv": "高考"}, "somewhat": {"w": "somewhat", "ph": "ˈsʌmwʌt", "defs": ["adv. 稍微，有点", "pron. 几分；某物"], "forms": [], "ex": [["He has a somewhat donnish air about him.", "他身上有点学究气。"], ["Research in this area is somewhat equivocal.", "这个领域的研究有些难以理解。"]], "lv": "高考"}, "emotional": {"w": "emotional", "ph": "ɪˈmoʊʃən(ə)l", "defs": ["adj. 情感的，情绪的；激动人心的，有感染力的；情绪激动的（尤指哭泣），情感流露的；（人）易动感情的，感情用事的"], "forms": [], "ex": [["My emotional turmoil had drained me.", "困惑焦灼的情绪使我心力交瘁。"], ["They made an emotional appeal for help.", "他们情绪激动地恳求救助。"]], "lv": "高考"}, "level": {"w": "level", "ph": "ˈlev(ə)l", "defs": ["n. 数量，程度；标准，水平；层次，级别；看待（或应对、理解）事物的方式；水平高度，相对高度；楼层；平地；水平仪", "adj. 平坦的，水平的；相同价值的，相同地位的；比分相同的；平静的，冷静的", "v. 使平整；推倒，夷平；（使）比分相同；（尤指用枪）瞄准；针对……（进行批评等）；稳定下来，达到平衡（level off）；坦诚相见；作水准测量", "【名】 （Level）（法）勒韦尔（人名）"], "forms": ["复数 levels", "第三人称单数 levels", "现在分词 levelling或leveling", "过去式 levelled或leveled", "过去分词 levelled或leveled"], "ex": [["He studied French to degree level.", "他的法语学到了拿学位的水平。"], ["He's got an O level in Russian.", "他通过了俄语普通证书考试。"]], "lv": "中考"}, "the": {"w": "the", "ph": "", "defs": ["art. 这/那（定冠词，表特指）"], "forms": [], "ex": [], "lv": null}, "a": {"w": "a", "ph": "", "defs": ["art. 一个（不定冠词）"], "forms": [], "ex": [], "lv": null}, "an": {"w": "an", "ph": "", "defs": ["art. 一个（用于元音前）"], "forms": [], "ex": [], "lv": null}, "that": {"w": "that", "ph": "", "defs": ["pron./conj. 那个；（引导从句）"], "forms": [], "ex": [], "lv": null}, "and": {"w": "and", "ph": "", "defs": ["conj. 和；并且"], "forms": [], "ex": [], "lv": null}, "but": {"w": "but", "ph": "", "defs": ["conj./prep. 但是；除…外"], "forms": [], "ex": [], "lv": null}, "if": {"w": "if", "ph": "", "defs": ["conj. 如果"], "forms": [], "ex": [], "lv": null}, "in": {"w": "in", "ph": "", "defs": ["prep. 在…里；在…方面"], "forms": [], "ex": [], "lv": null}, "on": {"w": "on", "ph": "", "defs": ["prep. 在…上；关于"], "forms": [], "ex": [], "lv": null}, "with": {"w": "with", "ph": "", "defs": ["prep. 和…一起；用"], "forms": [], "ex": [], "lv": null}, "to": {"w": "to", "ph": "", "defs": ["prep. 到；向"], "forms": [], "ex": [], "lv": null}, "of": {"w": "of", "ph": "", "defs": ["prep. …的（所属）"], "forms": [], "ex": [], "lv": null}, "up": {"w": "up", "ph": "", "defs": ["adv. 向上"], "forms": [], "ex": [], "lv": null}, "down": {"w": "down", "ph": "", "defs": ["adv. 向下"], "forms": [], "ex": [], "lv": null}, "not": {"w": "not", "ph": "", "defs": ["adv. 不"], "forms": [], "ex": [], "lv": null}, "just": {"w": "just", "ph": "", "defs": ["adv. 只是；刚刚"], "forms": [], "ex": [], "lv": null}, "still": {"w": "still", "ph": "", "defs": ["adv. 仍然"], "forms": [], "ex": [], "lv": null}, "there": {"w": "there", "ph": "", "defs": ["adv. 那里；（there be 表存在）"], "forms": [], "ex": [], "lv": null}, "when": {"w": "when", "ph": "", "defs": ["adv./conj. 何时；当…时"], "forms": [], "ex": [], "lv": null}, "who": {"w": "who", "ph": "", "defs": ["pron. 谁"], "forms": [], "ex": [], "lv": null}};
+const eng = {
+  youdao: u => 'https://dict.youdao.com/dictvoice?type=1&audio=' + encodeURIComponent(u),
+  google: u => 'https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=en&q=' + encodeURIComponent(u)
+};
+let voices = [], stopFlag = false, audioEl = null, curRow = -1;
+const $ = id => document.getElementById(id);
+const esc = s => String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+/* ---------- 句子列表 ---------- */
+let h = '', last = '';
+DATA.forEach((d, i) => {
+  if (d.part !== last) { last = d.part; h += '<div class="part-h">Part ' + d.part + '</div>'; }
+  h += '<div class="row" data-i="' + i + '"><div class="en"><span class="num">' + (i+1) + '</span>'
+     + esc(d.en) + '</div>' + (d.cn ? '<div class="cn">' + esc(d.cn) + '</div>' : '') + '</div>';
+});
+$('list').innerHTML = h;
+
+/* ---------- 语音 ---------- */
+function loadVoices(){
+  const sel = $('voice');
+  voices = speechSynthesis.getVoices().filter(v => /^en/i.test(v.lang));
+  sel.innerHTML = '<option value="">默认语音</option>'
+    + voices.map((v,i) => '<option value="' + i + '">' + esc(v.name) + '</option>').join('');
+  if (!voices.length){
+    $('engine').value = 'youdao';
+    $('status').innerHTML = '本机没有检测到英文语音包，已自动切到<b>在线·有道</b>（需要联网）。';
+  } else {
+    $('status').textContent = '检测到 ' + voices.length + ' 个英文语音，使用本地离线朗读。';
+  }
+}
+speechSynthesis.onvoiceschanged = loadVoices; loadVoices();
+
+function speakLocal(text, done){
+  const u = new SpeechSynthesisUtterance(text);
+  const idx = $('voice').value;
+  if (idx !== '' && voices[idx]) u.voice = voices[idx];
+  u.lang = 'en-US'; u.rate = parseFloat($('rate').value);
+  u.onend = done; u.onerror = done;
+  speechSynthesis.speak(u);
+}
+function splitChunks(text, max){
+  const first = []; let cur = '';
+  text.split(/(?<=[.;:!?])\s+|(?<=,)\s+/).forEach(seg => {
+    if ((cur + ' ' + seg).trim().length > max && cur){ first.push(cur.trim()); cur = seg; }
+    else cur = (cur ? cur + ' ' : '') + seg;
+  });
+  if (cur.trim()) first.push(cur.trim());
+  const res = [];
+  first.forEach(c => {
+    if (c.length <= max){ res.push(c); return; }
+    let buf = '';
+    c.split(/\s+/).forEach(w => {
+      if ((buf + ' ' + w).length > max && buf){ res.push(buf); buf = w; } else buf = buf ? buf + ' ' + w : w;
+    });
+    if (buf) res.push(buf);
+  });
+  return res;
+}
+function speakOnline(text, done){
+  const mk = eng[$('engine').value] || eng.youdao;
+  const arr = splitChunks(text, 170);
+  let k = 0, fail = 0;
+  (function next(){
+    if (stopFlag || k >= arr.length) return done();
+    if (audioEl) audioEl.pause();
+    audioEl = new Audio(mk(arr[k])); k++;
+    audioEl.onended = next;
+    audioEl.onerror = () => { if (++fail >= 2) return done(); next(); };
+    audioEl.play().catch(() => next());
+  })();
+}
+function speak(text, done){
+  if ($('engine').value === 'local' && voices.length) speakLocal(text, done);
+  else speakOnline(text, done);
+}
+
+/* ---------- 生词本 ---------- */
+const VKEY = 'yuedu_vocab';
+let vocab = [];
+try { vocab = JSON.parse(localStorage.getItem(VKEY) || '[]'); } catch(e){ vocab = []; }
+function renderVocab(){
+  $('vocabH').textContent = '⭐ 生词本（' + vocab.length + '）';
+  const ul = $('vocab');
+  ul.innerHTML = '';
+  vocab.forEach((w, i) => {
+    const li = document.createElement('li');
+    const a = document.createElement('span');
+    a.className = 'vw'; a.textContent = w;
+    a.onclick = () => showWord(w, w);
+    const b = document.createElement('span');
+    b.className = 'del'; b.textContent = '×';
+    b.onclick = () => { vocab.splice(i, 1); saveVocab(); };
+    li.appendChild(a); li.appendChild(b); ul.appendChild(li);
+  });
+}
+function saveVocab(){
+  localStorage.setItem(VKEY, JSON.stringify(vocab));
+  renderVocab();
+}
+renderVocab();
+
+/* ---------- 词面板 ---------- */
+function renderSentence(i){
+  curRow = i;
+  document.querySelectorAll('.row.active').forEach(r => r.classList.remove('active'));
+  const row = document.querySelector('.row[data-i="' + i + '"]');
+  if (row) row.classList.add('active');
+  const d = DATA[i];
+  $('sent').innerHTML = '<b>句 ' + (i+1) + '</b>（Part ' + d.part + '）· ' + esc(d.en);
+  const box = $('chips');
+  box.innerHTML = '';
+  (d.tok || []).forEach(p => {
+    const t = p[0], k = p[1];
+    if (/^\s+$/.test(t)){
+      const sp = document.createElement('span'); sp.innerHTML = '&nbsp;'; box.appendChild(sp); return;
+    }
+    if (!/^[A-Za-z]/.test(t)){
+      const sp = document.createElement('span'); sp.className = 'punct'; sp.textContent = t; box.appendChild(sp); return;
+    }
+    const el = document.createElement('span');
+    el.className = 'chip' + (k && BANK[k] ? ' dict' : '');
+    el.textContent = t;
+    el.onclick = () => {
+      box.querySelectorAll('.chip.sel').forEach(x => x.classList.remove('sel'));
+      el.classList.add('sel');
+      showWord(k, t);
+    };
+    box.appendChild(el);
+  });
+  $('card').innerHTML = '<div class="empty">点上面任意单词查看释义。<br>带绿色底线的词，词库已收录。</div>';
+}
+
+function showWord(key, surface){
+  const e = BANK[key];
+  if (!e){
+    $('card').innerHTML = '<div class="hd"><span class="word">' + esc(surface || key) + '</span></div>'
+      + '<div class="empty">词库暂未收录这个词。</div>';
+    return;
+  }
+  let html = '<div class="hd"><span class="word">' + esc(e.w) + '</span>'
+           + (e.ph ? '<span class="phn">/' + esc(e.ph) + '/</span>' : '')
+           + (e.lv ? '<span class="badge lv">' + esc(e.lv) + '</span>' : '')
+           + '<button id="speakW">🔊 朗读</button><button id="starW">⭐</button></div>';
+  if (e.defs && e.defs.length)
+    html += '<div class="sub">释义</div><ul class="defs">' + e.defs.map(x => '<li>' + esc(x) + '</li>').join('') + '</ul>';
+  if (e.forms && e.forms.length)
+    html += '<div class="forms">词形变化：' + esc(e.forms.join(' ｜ ')) + '</div>';
+  if (e.ex && e.ex.length){
+    html += '<div class="sub">真实例句（点句朗读）</div>';
+    html += e.ex.map(p => '<div class="ex" data-s="' + esc(p[0]) + '">' + esc(p[0])
+             + '<div class="cnx">' + esc(p[1]) + '</div></div>').join('');
+  }
+  $('card').innerHTML = html;
+  $('speakW').onclick = () => speak(e.w, () => {});
+  const sw = $('starW');
+  const sync = () => {
+    const on = vocab.indexOf(e.w) >= 0;
+    sw.textContent = on ? '★ 已收藏' : '⭐ 收藏';
+    sw.className = on ? 'on' : '';
+  };
+  sw.onclick = () => {
+    const i = vocab.indexOf(e.w);
+    if (i >= 0) vocab.splice(i, 1); else vocab.push(e.w);
+    saveVocab(); sync();
+  };
+  sync();
+  $('card').querySelectorAll('.ex').forEach(el => {
+    el.onclick = () => speak(el.dataset.s, () => {});
+  });
+}
+
+/* ---------- 播放控制 ---------- */
+function clearHL(){ document.querySelectorAll('.row.playing').forEach(r => r.classList.remove('playing')); }
+function highlight(i){
+  clearHL();
+  const el = document.querySelector('.row[data-i="' + i + '"]');
+  if (el){ el.classList.add('playing'); el.scrollIntoView({block:'center', behavior:'smooth'}); }
+}
+function cancelAll(){
+  stopFlag = true;
+  if ('speechSynthesis' in window) speechSynthesis.cancel();
+  if (audioEl){ audioEl.pause(); audioEl = null; }
+}
+async function playFrom(start){
+  stopFlag = false;
+  for (let i = start; i < DATA.length; i++){
+    if (stopFlag) break;
+    highlight(i); renderSentence(i);
+    await new Promise(res => speak(DATA[i].en, res));
+    if (stopFlag) break;
+    await new Promise(res => setTimeout(res, +$('gap').value));
+  }
+  clearHL();
+}
+$('list').addEventListener('click', ev => {
+  const row = ev.target.closest('.row');
+  if (!row) return;
+  cancelAll(); stopFlag = false;
+  const i = +row.dataset.i;
+  highlight(i); renderSentence(i);
+  speak(DATA[i].en, () => {});
+});
+$('playAll').onclick = () => { cancelAll(); playFrom(0); };
+$('stop').onclick = () => { cancelAll(); clearHL(); };
+$('toggleCn').onclick = function(){
+  document.body.classList.toggle('show-cn');
+  this.classList.toggle('on');
+  this.textContent = document.body.classList.contains('show-cn') ? '隐藏中文' : '显示中文';
+};
+$('rate').oninput = () => $('rateVal').textContent = $('rate').value + 'x';
+$('gap').oninput = () => $('gapVal').textContent = ($('gap').value / 1000).toFixed(1) + 's';
+$('engine').onchange = function(){
+  if (this.value === 'local' && !voices.length){
+    this.value = 'youdao';
+    $('status').textContent = '本机没有英文语音包，无法使用本地模式。';
+  } else {
+    $('status').textContent = this.value === 'local'
+      ? '已切换到本地离线朗读。' : '已切换到' + this.options[this.selectedIndex].text + '（需要联网）。';
+  }
+};
+</script>
+</body>
+</html>

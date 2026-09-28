@@ -25,6 +25,28 @@
 
 **规则：一次只有一条视频在跑。脚本已经安全了，但 yt-dlp + cookie 刷新仍共享同一份 `douyin_cookies.txt`，串行更省事。**
 
+### ⚠️ 坑位：英文素材必须显式传 `--language en`（2026-09-28 新增）
+
+`transcribe()` 原先**硬编码** `language="zh"` 加中文 `initial_prompt`。遇到英文视频时，Whisper 不会报错，而是把英文硬"翻译"成中文，产出一堆通顺但完全错误的幻觉文本 —— 2026-09-28 首次踩到：马斯克谈朋友的 35 秒英文演讲，被转写成「每个人喜欢看下来的鞋子」「那不是一位鞋子」，`duration` 和 `ok` 都正常，**单看返回值根本发现不了**。
+
+**判据**：只要逐字稿读起来"每句都像中文，但连起来不通"，就是语言设错了，不是转写质量差。
+
+```bash
+# 英文素材（抖音英文演讲、YouTube 英文访谈等）
+python download_transcribe.py <链接> --date YYYY-MM-DD --model small --language en
+
+# 拿不准语言时让它自己检测
+python download_transcribe.py <链接> --date YYYY-MM-DD --model small --language auto
+```
+
+已固化：新增 `--language` 参数（`zh` 默认 / `en` / `auto`），`PROMPTS` 按语言切换 initial_prompt；`auto` 走 Whisper 自动检测。
+
+### ⚠️ 坑位：群里可能混入非抖音链接（2026-09-28 记录）
+
+自动化按 `https?://(v\.|www\.)?douyin\.com/[\w/]+` 提取链接，**YouTube / B 站等外链不会被正则命中**。2026-09-26 用户分享了一条 44 分钟的 YouTube 访谈，如果只看提取结果就是"无新增"。
+
+**规则**：全量复核时不要只数"抖音链接数"，要**逐条扫消息正文**。发现外链时按主题判断 —— 与 AI/学习相关就一并处理（`download_transcribe.py` 走 yt-dlp，YouTube 直链可下；加 `--no-cookie-refresh` 跳过抖音 cookie 刷新）。
+
 ### ⚠️ 坑位：`make_shadowing.py --no-words` 会覆盖成品（2026-09-21 修复）
 
 `--no-words` 本意是"只想确认一下 Part 分布"，但旧实现把词库置空，`--no-words` 跑一次就把已经做好的 400KB 词典版 HTML 冲成一个 85KB 的空壳。
