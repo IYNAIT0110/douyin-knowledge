@@ -31,15 +31,17 @@
 
 **判据**：只要逐字稿读起来"每句都像中文，但连起来不通"，就是语言设错了，不是转写质量差。
 
-```bash
-# 英文素材（抖音英文演讲、YouTube 英文访谈等）
-python download_transcribe.py <链接> --date YYYY-MM-DD --model small --language en
+已固化：新增 `--language` 参数，**默认 `auto`** —— 先 `decode_audio()` 解码前 30 秒音频、用 `model.detect_language()` 探测（约 1 秒，实测置信度 0.97-0.98），再决定 `language` 与 `initial_prompt`。**中文 prompt 只喂给中文音频**，喂给英文音频会直接误导模型。
 
-# 拿不准语言时让它自己检测
-python download_transcribe.py <链接> --date YYYY-MM-DD --model small --language auto
+```bash
+# 默认即可，语言自动探测
+python download_transcribe.py <链接> --date YYYY-MM-DD --model small
+
+# 探测不放心时人工强制
+python download_transcribe.py <链接> --date YYYY-MM-DD --model small --language en
 ```
 
-已固化：新增 `--language` 参数（`zh` 默认 / `en` / `auto`），`PROMPTS` 按语言切换 initial_prompt；`auto` 走 Whisper 自动检测。
+⚠️ 注意：`decode_audio` 的导入路径是 `faster_whisper.audio`；`model.detect_language()` **只收 numpy 音频数组**，直接传文件路径会报 `AttributeError: 'str' object has no attribute 'dtype'`。
 
 ### ⚠️ 坑位：群里可能混入非抖音链接（2026-09-28 记录）
 
