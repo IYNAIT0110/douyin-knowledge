@@ -142,7 +142,16 @@ python make_shadowing.py "notes/xxx.md" --refresh                    # 忽略缓
 - ⭐ 可收藏进**生词本**，存 localStorage，关掉浏览器再开还在
 - 带绿色底线的 chip = 词库已收录；未收录的（多为专有名词）会明确提示
 
-词库在**生成 HTML 时**一次性从有道词典 `dict.youdao.com/jsonapi` 抓取，缓存到 `wordcache/`，之后**永久离线可用**（单篇约 660 词条，句内词覆盖率约 98%）。网络不通也不会失败，会沿用已有缓存。
+词库在**生成 HTML 时**一次性从有道词典 `dict.youdao.com/jsonapi` 抓取，缓存到 `wordcache/`，之后**永久离线可用**。网络不通也不会失败，会沿用已有缓存。
+
+**词覆盖现状（2026-10-06 全库体检，10 篇 / 356 句）**：扣除脚本有意跳过的功能词后，**实词有释义率 99.4%**（3679 个实词里只有 21 个查不到，且全是专有名词或自造复合词，见下）。此前为 97.3%，差距来自 `lemma()` 的词形还原缺陷，已于 2026-10-06 修复：
+
+| 缺陷 | 表现 | 修法 |
+| --- | --- | --- |
+| 剥 `-ed` / `-ing` 时丢掉哑音 e | `accumulated→accumulat`、`produced→produc`、`described→describ`、`making→mak` → chip 显示「未收录」 | 分词后**再去查一次词库**：key 查不到就试 `key+"e"`，还查不到就退回表面原形。三者都要求 bank 里该项真的有 `defs`，避免 `plan→plane` 这类误纠 |
+| 非过去式却被剥 `-ed` | `hundred→hundr`、`tired→tir` | 同上，第 3 级「退回表面原形」覆盖 |
+
+残留查不到的 21 个（属正常）—— `chatgpt` `qwen` `zhipu` `stepfun` `langchain` `midjourney` `openclaw` `rlcd` 等专有名词，以及 `ai-doom` `doom-logic` `fact-versus-opinion` `self-optimisation` `techno-feudalism` `super-app` 等行文临时造的复合词。
 
 **同样必须保证"任何电脑都能出声"**，语音三档自动降级：
 
@@ -153,7 +162,7 @@ python make_shadowing.py "notes/xxx.md" --refresh                    # 忽略缓
 打开时若检测不到英文语音包，自动切换在线档并在页面上提示。`shadowing/` 的 HTML **要上传 GitHub**，方便换机器下载后直接打开。
 
 > 参考样板：`notes/2026-09-18-对话吴恩达-AI恐惧与机会-深度总结.md`（知识向）+ `-中英对照.md`（英语向）+ `shadowing/…-跟读.html`
-> 注：`2026-09-18-AI命名里的小巧思-深度总结.md` 目前只有知识向一篇，尚未补对照版。
+> 注：`2026-09-18-AI命名里的小巧思` 的英语向篇与跟读页曾长期缺失，**已于 2026-10-01 补上**；目前全库 10 条视频均为「知识向 + 中英对照 + 跟读页」三件套齐备（10/10/10）。
 
 ## 环境配置（已就绪）
 
