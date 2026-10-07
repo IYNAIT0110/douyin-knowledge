@@ -151,7 +151,9 @@ python make_shadowing.py "notes/xxx.md" --refresh                    # 忽略缓
 | 剥 `-ed` / `-ing` 时丢掉哑音 e | `accumulated→accumulat`、`produced→produc`、`described→describ`、`making→mak` → chip 显示「未收录」 | 分词后**再去查一次词库**：key 查不到就试 `key+"e"`，还查不到就退回表面原形。三者都要求 bank 里该项真的有 `defs`，避免 `plan→plane` 这类误纠 |
 | 非过去式却被剥 `-ed` | `hundred→hundr`、`tired→tir` | 同上，第 3 级「退回表面原形」覆盖 |
 
-残留查不到的 21 个（属正常）—— `chatgpt` `qwen` `zhipu` `stepfun` `langchain` `midjourney` `openclaw` `rlcd` 等专有名词，以及 `ai-doom` `doom-logic` `fact-versus-opinion` `self-optimisation` `techno-feudalism` `super-app` 等行文临时造的复合词。
+残留查不到的一律是专有名词或行文临时造的复合词（属正常）—— `chatgpt` `qwen` `zhipu` `stepfun` `langchain` `midjourney` `openclaw` `rlcd`，以及 `ai-doom` `doom-logic` `fact-versus-opinion` `self-optimisation` `techno-feudalism` `super-app` `guest-scoring`。
+
+> **⚠️ 复核词覆盖时的口径（2026-10-07 补，写反过一次）**：要遍历的是 HTML 里 `const DATA` 中每个 `tok` 的 **lemma（chip 实际引用的 key）**，**不是 `const BANK` 的所有键**。`BANK` 里混着候选池的空壳 —— `asked` 会把 `ask`（采用）与候选 `aske` 一并送去抓词，`aske` 无释义就作为空条目留在 `BANK`，但没有任何 chip 引用它。按 `BANK` 扫会得到 88 个「未收录」（且清一色是 `aske`/`designe`/`hundre`/`produc` 这类修复说明里点名的过度纠错样例，看着像修复失效）；按 `DATA` 扫才是真实的 **99.4%**。
 
 **同样必须保证"任何电脑都能出声"**，语音三档自动降级：
 
