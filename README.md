@@ -377,5 +377,7 @@ C:\Users\tianyi.bu\.workbuddy\binaries\python\envs\douyin\Scripts\python.exe \
 - **yt-dlp 会被抖音签名风控拦（2026-10-30 实况）**：报 `Failed to download web detail JSON: HTTP Error 403` + `Fresh cookies (not necessarily logged in) are needed`，此时刷 cookie 也没用（cookie 已有 20 条）。兜底走法：用 Playwright 直接开视频页，监听网络请求拿到 `douyinvod.com` 的 `media-video-avc1` / `media-audio-und-mp4a` 直链，再用 `curl -H "Referer: https://www.douyin.com/"` 下载，最后交给 `transcribe_video.py` 转写。本次实测可行（脚本 `_pw_grab.py` / `_pw_frames.py`，不上传）。
 - 抖音风控可能升级，游客 cookie 若失效，`get_douyin_cookies.py` 会自动重刷，通常能恢复；同一条链接连刷失败 2 次以上就直接重试一次整个流程（2026-09-21：第一次 24 条 cookie 失败，重跑拿到 37 条即成功）
 - 转写走 CPU，长视频慢；有 NVIDIA 显卡可改 `device=cuda` 提速 5-10 倍
-- **CPU 转写速度实测远低于表中估算**（2026-10-30：5.7 分钟音频 small 模型跑满 1 小时未出结果）—— 短视频优先 `--model tiny`，或先出主报告、转写放后台
+- **转写慢多半是配置问题，不是机器**（2026-10-30 实测）：同一段 5:45 音频，`small + beam_size=5` 跑 1 小时没出稿；换 **`tiny + beam_size=1`** 只用 **29 秒**（约 100 倍）。
+  - 判据：`small` 的价值只在成稿质量，短素材根本用不上；**先跑 tiny/greedy 拿到可用稿，再决定是否值得用 small 重跑**。
+  - 注意 `transcribe_video.py` 里 `language` 硬编码 `zh`，英文素材要用 `download_transcribe.py`（自动探测）或自建 tiny 调用，否则英文会被硬译成中文幻觉。
 - 极少数视频（需登录才能观看的私密内容）游客态可能下不到，此时靠口述兜底
