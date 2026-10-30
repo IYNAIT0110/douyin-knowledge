@@ -3,6 +3,21 @@
 ## 用途
 每周一至周五上午 10:00 自动跑：读取飞书"抖音收藏"群当天分享的抖音视频链接，**自动下载 + Whisper 转写 + 生成摘要报告 + 学习待办**。
 
+## 产出规则（2026-10-30 定则，优先级高于下文所有历史约定）
+
+**这个仓库只装"学到了什么"，不装"今天没事"的记录。**
+
+| 情况 | 要做的事 |
+| --- | --- |
+| **当天有新增视频** | 正常产出：主报告 + 待办 +（判定命中时）知识向/中英对照 + 跟读页，然后 commit + push |
+| **当天无新增** | **不写任何文件、不 commit、不 push**。什么都不产出就是正确产出 |
+| **补做历史分享**（分享日与处理日不同） | 只在**实际处理的那天**写一份报告，并在报告里写清原始分享时间；**不给分享日补占位报告** |
+| **只做了脚本/检查类工作**（补洞、核对、修脚本） | 记在本文档与自动化 memory 里，**不生成 notes 文件** |
+
+**理由**：「今日无新增收藏」这类占位报告在 09-10→10-29 累积了 **84 个文件**，占仓库 `notes/` 的 2/3，里面没有一个字是知识 —— 它们把真正的 11 篇深度总结淹掉了，且每天还在增长。2026-10-30 已全部删除（`git log` 可查），`notes/` 只保留 8 天有内容的主报告与 11 套三件套。
+
+> 判据：**一份文件如果删掉之后你没有丢失任何知识，它就不该存在。**
+
 ## 方案一（已跑通）：游客 cookie 自动下载
 
 抖音下载的难点不在登录，而在"新鲜 cookie"（yt-dlp 报错原文 `Fresh cookies (not necessarily logged in) are needed`）。用无头浏览器访问一次 douyin.com 就能拿到含 `__ac_signature`、`ttwid` 的游客 cookie，无需登录。
@@ -88,7 +103,7 @@ python download_transcribe.py <链接> --date YYYY-MM-DD --model small --languag
    - yt-dlp 下载视频
    - faster-whisper 转写中文逐字稿 → `transcripts/YYYY-MM-DD/<id>.txt`
 3. 读逐字稿生成摘要；转写失败的用口述/文案兜底
-4. 生成 `notes/YYYY-MM-DD.md`（报告）+ `notes/YYYY-MM-DD-todos.md`（待办）
+4. **仅当有新增时**：生成 `notes/YYYY-MM-DD.md`（报告）+ `notes/YYYY-MM-DD-todos.md`（待办）。无新增则到此为止，不写文件、不 commit、不 push
 5. （满足条件时）生成**两篇**深度总结：`notes/YYYY-MM-DD-<主题>-深度总结.md`（纯中文知识向）+ `notes/YYYY-MM-DD-<主题>-中英对照.md`（英语学习向）
 6. 生成跟读页 `shadowing/YYYY-MM-DD-<主题>-跟读.html`
 7. present_files 展示
@@ -270,7 +285,8 @@ python make_shadowing.py "notes/xxx.md" --refresh                    # 忽略缓
 >
 > ⇒ **新判据：README 里的三类表述必须每次现算，不能沿用 —— ① 任何累计数量 ② 任何百分比 ③ 任何"文件/目录清单"。** 这三类有一个共同点：**它们会随仓库增长而自动过期，但读起来永远像真的**。这次 7 处里 4 处属此类。判据很简单：**写之前先 `ls`/跑一遍，写完之后再跑一遍确认。**
 >
-> ⇒ 顺带查出两处**结构性缺口**（非 README 问题）：日期占位缺 **10-24 / 10-25**（周末自动化未跑），`-todos.md` 缺 **9 个日期**（09-12 / 09-13 / 09-19 / 09-26 / 09-27 / 10-03 / 10-04 / 10-10 / 10-11 —— 都是补占位时只补了报告没补待办）。已一并补齐，**占位 09-10→10-26 全连续、44 个日期报告与待办一一对应**。
+> ⇒ 顺带查出两处**结构性缺口**（非 README 问题）：日期占位缺 **10-24 / 10-25**（周末自动化未跑），`-todos.md` 缺 **9 个日期**（09-12 / 09-13 / 09-19 / 09-26 / 09-27 / 10-03 / 10-04 / 10-10 / 10-11 —— 都是补占位时只补了报告没补待办）。当时已一并补齐。
+> ⚠️ **此条已作废（2026-10-30）**：「占位全连续」的做法当天被废除，那 84 个空窗占位文件已从仓库删除，理由见下文「产出规则」。此段仅作历史记录保留。
 >
 > ⚠️ **访谈素材里的广告口播别当观点收**（2026-10-12）：吴恩达这条访谈夹有**两段主持人念的赞助插入**（约 444-537s HubSpot prompt playbook、1143-1175s Newsletter 引流）。识别特征是 `Quick pause` / `thanks to X for sponsoring` / `links in the description` 这类转场套话，以及**说话人突然变了**。补洞按时间轴粗扫时极易误收，两篇 md 文件头已写明不收录。详见 `~/.workbuddy/skills/feishu-group-video-digest/SKILL.md` 坑位 27。
 
@@ -309,7 +325,7 @@ Whisper 模型（首次转写自动下载到 `C:\Users\tianyi.bu\.cache\huggingf
 | `get_douyin_cookies.py` | 单独刷游客 cookie |
 | `transcribe_video.py` | 单独转写本地视频文件 |
 | `transcribe_douyin.py` | 抖音专用转写封装（2026-10-26 实点补入此表，此前漏列） |
-| `check_refs.py` | **引用完整性核对**（2026-10-28 新增）：扫所有 `notes/*.md` 里的 `notes/` `shadowing/` `transcripts/` 路径逐个验存在性；查 11 篇深度总结的三件套是否在主报告里挂出；查日期占位连续性；列未提交改动 |
+| `check_refs.py` | **引用完整性核对**（2026-10-28 新增）：扫所有 `notes/*.md` 里的 `notes/` `shadowing/` `transcripts/` 路径逐个验存在性；查 11 篇深度总结的三件套是否在主报告里挂出；查**报告 ↔ 待办配对**（2026-10-30 起不再查日期连续性，因为空窗占位已废除）；列未提交改动 |
 | `check_pairs.py` | **反向完整性核对**（2026-10-29 新增）：① 12 份逐字稿是否都有归属的深度总结 ② 每篇深度总结的**实际用词最佳匹配稿**是否等于它声明的那份（余弦 + 英文专名锚点双通道）③ 中英对照篇是否声明素材 ④ 跟读页 mtime 是否落后于源对照篇 |
 
 > 八个脚本都不上传 GitHub（`.gitignore` 排除 `*.py`），只在本机 `douyin_collection/` 下维护；`make_shadowing.py` + `shadow_tpl.py` 在 `成长感悟` 仓库下**还有一份副本，改了必须两边同步**。
@@ -333,7 +349,7 @@ C:\Users\tianyi.bu\.workbuddy\binaries\python\envs\douyin\Scripts\python.exe \
 
 | 目录 | 用途 |
 |------|------|
-| `notes/` | **知识产出**，按日期命名：报告 `YYYY-MM-DD.md`、待办 `YYYY-MM-DD-todos.md`、深度总结 `…-深度总结.md`（知识向）+ `…-中英对照.md`（英语向） |
+| `notes/` | **知识产出，只收录有新增的日子**（2026-10-30 起无空窗占位）：报告 `YYYY-MM-DD.md`、待办 `YYYY-MM-DD-todos.md`、深度总结 `…-深度总结.md`（知识向）+ `…-中英对照.md`（英语向） |
 | `shadowing/` | 跟读 HTML（单文件自带数据，任何电脑可开），随仓库上传 |
 | `transcripts/` | 逐字稿 txt/json，按日期分组（不上传） |
 | `wordcache/` | 词典抓取缓存（构建时用，不上传；删了会自动重抓） |
@@ -347,7 +363,7 @@ C:\Users\tianyi.bu\.workbuddy\binaries\python\envs\douyin\Scripts\python.exe \
 
 ## GitHub 同步
 
-每天整理完 `notes/` 下的 md 文件后，自动 git commit + push 到：
+每天整理完 `notes/` 下的 md 文件后，自动 git commit + push 到（**当天无新增则不提交、不推送**）：
 
 🔗 **https://github.com/IYNAIT0110/douyin-knowledge**
 
@@ -358,6 +374,8 @@ C:\Users\tianyi.bu\.workbuddy\binaries\python\envs\douyin\Scripts\python.exe \
 
 ## 已知限制
 
+- **yt-dlp 会被抖音签名风控拦（2026-10-30 实况）**：报 `Failed to download web detail JSON: HTTP Error 403` + `Fresh cookies (not necessarily logged in) are needed`，此时刷 cookie 也没用（cookie 已有 20 条）。兜底走法：用 Playwright 直接开视频页，监听网络请求拿到 `douyinvod.com` 的 `media-video-avc1` / `media-audio-und-mp4a` 直链，再用 `curl -H "Referer: https://www.douyin.com/"` 下载，最后交给 `transcribe_video.py` 转写。本次实测可行（脚本 `_pw_grab.py` / `_pw_frames.py`，不上传）。
 - 抖音风控可能升级，游客 cookie 若失效，`get_douyin_cookies.py` 会自动重刷，通常能恢复；同一条链接连刷失败 2 次以上就直接重试一次整个流程（2026-09-21：第一次 24 条 cookie 失败，重跑拿到 37 条即成功）
 - 转写走 CPU，长视频慢；有 NVIDIA 显卡可改 `device=cuda` 提速 5-10 倍
+- **CPU 转写速度实测远低于表中估算**（2026-10-30：5.7 分钟音频 small 模型跑满 1 小时未出结果）—— 短视频优先 `--model tiny`，或先出主报告、转写放后台
 - 极少数视频（需登录才能观看的私密内容）游客态可能下不到，此时靠口述兜底
